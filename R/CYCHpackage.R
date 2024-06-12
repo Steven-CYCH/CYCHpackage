@@ -121,7 +121,7 @@ s.dc.var_missing <- function(dataset, ID_name = 'ID', listout_col = NULL){
         if (missing.ratio > 50){
           cat('遺漏值比例超過50%，建議刪除\n')
         }
-        print(missDT)
+        # print(missDT)
         cat('\n\n')
       }
     }
