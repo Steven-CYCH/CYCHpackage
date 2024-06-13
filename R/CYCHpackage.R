@@ -119,7 +119,7 @@ s.dc.var_missing <- function(dataset, ID_name = 'ID', listout_col = NULL){
         missing.ratio <- (dim(missDT)[1]/dim(DT)[1]) * 100
         cat('變數', colName, '中含有', round(missing.ratio, digits = 2), '%的遺漏值\n')
         if (missing.ratio > 50){
-          cat('遺漏值比例超過50%，建議刪除\n')
+          cat('變數', colName, '遺漏值比例超過50%，建議刪除\n')
         }
         # print(missDT)
         cat('\n\n')
