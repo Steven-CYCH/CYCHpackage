@@ -174,7 +174,7 @@ s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = 
 
   dataset <- as.data.frame(dataset)
   for (variable in impute_list) {
-    cat('\n\n')
+    cat('\n')
     cat(variable)
     observation <- dataset[[variable]]
     na_num <- length(observation[is.na(observation)])
