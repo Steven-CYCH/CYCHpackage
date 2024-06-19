@@ -149,3 +149,47 @@ s.dc.sample_missing <- function(dataset, deleting_ratio = 0.1){
 
   return(dataset)
 }
+
+# 遺漏值填補
+s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = NULL, impute_method = 'mean') {
+  # 參數名稱定義
+  # dataset 要填補的dataset名稱
+  # impute_list 需要做填補的變數名稱，不可包含ID
+  # exclude_list 不需要做填補的變數名稱，若有ID需包含ID
+  # impute_method 做填補的方法，可選mean(平均)、median(中位數)或mode(眾數)
+
+  dataset <- as.data.table(dataset)
+
+  # 整理需要被填補的變數
+  if (is.null(impute_list) & is.null(exclude_list)){
+    stop('請輸入要填補的變數名稱，或至少指定一個不填補的變數(若有ID需指定ID)')
+  }else if(is.null(impute_list) == TRUE & is.null(exclude_list) == FALSE){
+    impute_list <- colnames(dataset)[-which(colnames(dataset) %in% exclude_list)]
+  }else if(is.null(exclude_list) == TRUE & is.null(impute_list) == FALSE){
+    impute_list <- impute_list
+  }else{
+    impute_list <- impute_list[-which(impute_list %in% exclude_list)]
+  }
+
+  dataset <- as.data.frame(dataset)
+  for (variable in impute_list) {
+    cat('\n\n')
+    cat(variable)
+    observation <- dataset[[variable]]
+    na_num <- length(observation[is.na(observation)])
+
+    if (na_num != 0){
+      if (impute_method == 'mean'){
+        impute_value <- mean(observation, na.rm = TRUE)
+      }else if(impute_method == 'median'){
+        impute_value <- median(observation, na.rm = TRUE)
+      }else if(impute_method == 'mode'){
+        impute_value <- mean(as.numeric(names(table(observation)))[table(observation) == max(table(observation))])
+      }
+      observation[is.na(observation)] <- impute_value
+      dataset[[variable]] <- observation
+      cat('填補完成')
+    }
+  }
+  return(dataset)
+}
