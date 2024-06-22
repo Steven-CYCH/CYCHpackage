@@ -16,7 +16,7 @@
 
 ## s.dc.missing_detector ##
 ### Description ###
-1. 針對變數列出遺漏值
+1. 計算各變數遺漏值比例
 2. 印出遺漏值的資料部分
 ### Usage ###
 ### Arguments ###
