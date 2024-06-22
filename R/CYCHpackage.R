@@ -23,7 +23,7 @@ library(bazar)
 # s.dc ----
 # data clean ----
 # 異常值偵測 ----
-s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_omit = TRUE, in_list = NULL, out_list = NULL) {
+s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, in_list = NULL, out_list = NULL) {
   # 參數名稱定義
   # dataset 要檢查離群值的dataset名稱
   # ID_name ID不被納入檢測，以'字串'型態輸入
@@ -53,7 +53,7 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_omit 
       cat(variable, '\n')
       dataset <- as.data.frame(dataset)
       observation <- dataset[[variable]]
-      if (NA_omit == TRUE){
+      if (NA_obs_out == FALSE){
         observation.na <- observation[!is.na(observation)]
         if (length(observation.na) != length(observation)){
           cat('變數', variable, '含有NA值，但已省略輸出')
@@ -71,7 +71,7 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_omit 
         for (i in 1:dim(dataset)[1]) {
           obs <- dataset[i, variable]
           if (is.na(obs)){
-            if (NA_omit != TRUE){
+            if (NA_obs_out == FALSE){
               cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值為 Missing Data \n')
             }
           }else{
@@ -97,6 +97,7 @@ s.dc.missing_detector <- function(dataset, ID_name = 'ID', listout_col = NULL, N
   # dataset 要檢查遺漏值的dataset名稱
   # ID_name ID不被納入檢測，以'字串'型態輸入
   # listout_col 檢測過程中需列出參考的欄位，以c('', '')輸入
+  # NA_obs_out 檢測過程中是否列出NA的觀察值
 
   # dataset <- DT.exam
   # ID_name <- 'ID'
