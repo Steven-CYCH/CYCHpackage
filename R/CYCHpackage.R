@@ -99,7 +99,7 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
 
 
 # 遺漏值偵測 ----
-s.dc.missing_detector <- function(dataset, ID_name = 'ID', listout_col = NULL, NA_obs_out = FALSE){
+s.dc.missing_detector <- function(dataset, ID_name, listout_col = NULL, NA_obs_out = FALSE){
   # 參數名稱定義
   # dataset 要檢查遺漏值的dataset名稱
   # ID_name ID不被納入檢測，以'字串'型態輸入
@@ -117,6 +117,7 @@ s.dc.missing_detector <- function(dataset, ID_name = 'ID', listout_col = NULL, N
     }
 
     DT <- as.data.frame(dataset)
+    missing_count <- 0
     for (colName in colnames(DT)[-which(colnames(DT) == ID_name)]){
       # colName <- 'Height'
       # colName <- 'GPT'
@@ -135,6 +136,7 @@ s.dc.missing_detector <- function(dataset, ID_name = 'ID', listout_col = NULL, N
 
 
       if (dim(missDT)[1] != 0){
+        missing_count <- missing_count + 1
         missing.ratio <- (dim(missDT)[1]/dim(DT)[1]) * 100
         waring <- paste0('變數 ', colName, ' 中含有', round(missing.ratio, digits = 2), '%的遺漏值')
         if (missing.ratio > 50){
@@ -148,6 +150,9 @@ s.dc.missing_detector <- function(dataset, ID_name = 'ID', listout_col = NULL, N
         }
         cat('\n')
       }
+    }
+    if (missing_count <= 0){
+      cat('該資料集無Missing Data\n')
     }
   }else{
     stop('親愛的朋友，你的ID不是這個名字喔！')
