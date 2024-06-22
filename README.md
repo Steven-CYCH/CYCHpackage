@@ -7,7 +7,7 @@
 
 ## **Data Clean** ##
 
-### **s.dc.outlier_detector** ###
+### **<font face="Lucida Console">s.dc.outlier_detector</font>** ###
 
 #### Description ####
 1. 針對變數列出是否有離群值
