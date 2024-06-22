@@ -99,7 +99,7 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
 
 
 # 遺漏值偵測 ----
-s.dc.missing_detectorr <- function(dataset, ID_name = 'ID', listout_col = NULL, NA_obs_out = FALSE){
+s.dc.missing_detector <- function(dataset, ID_name = 'ID', listout_col = NULL, NA_obs_out = FALSE){
   # 參數名稱定義
   # dataset 要檢查遺漏值的dataset名稱
   # ID_name ID不被納入檢測，以'字串'型態輸入
