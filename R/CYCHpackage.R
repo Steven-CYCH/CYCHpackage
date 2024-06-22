@@ -1,16 +1,17 @@
 # Package: CYCHpackage
 # Type: Package
 # Title: Some Statistical method for research
-# Version: 0.4.0
+# Version: 0.5.0
 # Author: Sheng-You Su Assistant Research Fellow
 # Maintainer: The package maintainer <cych15334@gmail.com>
 # Description: 0.1.0 function addition 's.dc.outlier_detector'
 #              0.1.1 function 's.dc.outlier_detector' modifty error massage
 #              0.2.0 function addition 's.dc.outlier_detector'
-#              0.2.1 function 's.dc.outlier_detector' rename to 's.dc.var_outlier'
+#              0.2.1 function 's.dc.outlier_detector' rename from 's.dc.var_outlier'
 #              0.3.0 function addition 's.dc.sample_missing'
 #              0.3.1 function 's.dc.outlier_detector' modifty NA_omit
 #              0.4.0 function 's.dc.missing_imputation' modifty donot print dataset
+#              0.5.0 function addition 's.dc.missing_detector'
 # License: R 4.3.2 data.table 1.15.4
 # Encoding: UTF-8
 # LazyData: true
@@ -20,8 +21,8 @@ library(DataExplorer)
 library(bazar)
 
 # s.dc ----
-# data clean
-# 異常值偵測
+# data clean ----
+# 異常值偵測 ----
 s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_omit = TRUE, in_list = NULL, out_list = NULL) {
   # 參數名稱定義
   # dataset 要檢查離群值的dataset名稱
@@ -55,7 +56,7 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_omit 
       if (NA_omit == TRUE){
         observation.na <- observation[!is.na(observation)]
         if (length(observation.na) != length(observation)){
-          cat('變數', variable, '含有NA值，但已省略')
+          cat('變數', variable, '含有NA值，但已省略輸出')
         }
       }
       options(warn = -1)
@@ -89,12 +90,18 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_omit 
   }
 }
 
-# 變數遺漏值偵測
-s.dc.var_missing <- function(dataset, ID_name = 'ID', listout_col = NULL){
+
+# 遺漏值偵測 ----
+s.dc.missing_detector <- function(dataset, ID_name = 'ID', listout_col = NULL, NA_obs_out = FALSE){
   # 參數名稱定義
   # dataset 要檢查遺漏值的dataset名稱
   # ID_name ID不被納入檢測，以'字串'型態輸入
   # listout_col 檢測過程中需列出參考的欄位，以c('', '')輸入
+
+  # dataset <- DT.exam
+  # ID_name <- 'ID'
+  # listout_col <- NULL
+  # NA_obs_out <- TRUE
 
   if (ID_name %in% colnames(dataset)){
     if (is.null(listout_col)){
@@ -103,6 +110,8 @@ s.dc.var_missing <- function(dataset, ID_name = 'ID', listout_col = NULL){
 
     DT <- as.data.frame(dataset)
     for (colName in colnames(DT)[-which(colnames(DT) == ID_name)]){
+      # colName <- 'Height'
+      # colName <- 'GPT'
       # print(colName)
       obs <- DT[colName][[1]]
       typeis <- class(obs)
@@ -116,14 +125,20 @@ s.dc.var_missing <- function(dataset, ID_name = 'ID', listout_col = NULL){
         }
       }
 
+
       if (dim(missDT)[1] != 0){
         missing.ratio <- (dim(missDT)[1]/dim(DT)[1]) * 100
-        cat('變數', colName, '中含有', round(missing.ratio, digits = 2), '%的遺漏值\n')
+        waring <- paste0('變數 ', colName, ' 中含有', round(missing.ratio, digits = 2), '%的遺漏值')
         if (missing.ratio > 50){
-          cat('變數', colName, '遺漏值比例超過50%，建議刪除\n')
+          waring <- paste0(waring, '，比例超過50%，建議刪除')
+          cat(waring, '\n')
+        }else{
+          cat(waring, '\n')
         }
-        # print(missDT)
-        cat('\n\n')
+        if (NA_obs_out == TRUE){
+          print(missDT)
+        }
+        cat('\n')
       }
     }
   }else{
@@ -132,7 +147,7 @@ s.dc.var_missing <- function(dataset, ID_name = 'ID', listout_col = NULL){
   print('The reference doi is：10.1007/s00432-022-04063-5')
 }
 
-# 樣本遺漏值偵測
+# 樣本遺漏刪除處理 ----
 s.dc.sample_missing <- function(dataset, deleting_ratio = 0.1){
   # 參數名稱定義
   # dataset 要檢查遺漏值的dataset名稱，以data.table形式輸入
@@ -151,7 +166,8 @@ s.dc.sample_missing <- function(dataset, deleting_ratio = 0.1){
   return(dataset)
 }
 
-# 遺漏值填補
+
+# 遺漏填補處理 ----
 s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = NULL, impute_method = 'mean') {
   # 參數名稱定義
   # dataset 要填補的dataset名稱
