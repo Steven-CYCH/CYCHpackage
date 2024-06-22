@@ -218,7 +218,7 @@ s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = 
       }
       observation[is.na(observation)] <- impute_value
       dataset[[variable]] <- observation
-      cat('填補完成')
+      cat('  填補完成')
     }
   }
   return(dataset)
