@@ -180,12 +180,13 @@ s.dc.sample_missing <- function(dataset, deleting_ratio = 0.1){
 
 
 # 遺漏填補處理 ----
-s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = NULL, impute_method = 'mean') {
+s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = NULL, impute_method = 'mean', decimal = 2) {
   # 參數名稱定義
   # dataset 要填補的dataset名稱
   # impute_list 需要做填補的變數名稱，不可包含ID
   # exclude_list 不需要做填補的變數名稱，若有ID需包含ID
   # impute_method 做填補的方法，可選mean(平均)、median(中位數)或mode(眾數)
+  # decimal 小數位數
 
   dataset <- as.data.table(dataset)
 
@@ -209,11 +210,11 @@ s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = 
 
     if (na_num != 0){
       if (impute_method == 'mean'){
-        impute_value <- mean(observation, na.rm = TRUE)
+        impute_value <- round(mean(observation, na.rm = TRUE), digits = decimal)
       }else if(impute_method == 'median'){
         impute_value <- median(observation, na.rm = TRUE)
       }else if(impute_method == 'mode'){
-        impute_value <- mean(as.numeric(names(table(observation)))[table(observation) == max(table(observation))])
+        impute_value <- round(mean(as.numeric(names(table(observation)))[table(observation) == max(table(observation))]), digits = decimal)
       }
       observation[is.na(observation)] <- impute_value
       dataset[[variable]] <- observation
