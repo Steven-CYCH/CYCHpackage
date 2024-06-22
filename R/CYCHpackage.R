@@ -32,6 +32,12 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
   # in_list 需要被檢測的變數名稱，以c('', '')輸入
   # out_list 不被檢測的變數名稱，以c('', '')輸入
 
+  # ID_name <- 'ID'
+  # sig_num <- 3
+  # NA_obs_out <- FALSE
+  # in_list <- colnames(dataset)
+  # out_list <- NULL
+
   if (ID_name %in% colnames(dataset)){
     dataset <- as.data.table(dataset)
     out_list <- append(out_list, ID_name)
@@ -49,14 +55,16 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
 
     # 設定離群值的上下界
     for (variable in in_list) {
-      cat('\n\n')
+      # variable <- 'sodium'
+      # variable <- 'EF'
+      cat('\n')
       cat(variable, '\n')
       dataset <- as.data.frame(dataset)
       observation <- dataset[[variable]]
       if (NA_obs_out == FALSE){
-        observation.na <- observation[!is.na(observation)]
-        if (length(observation.na) != length(observation)){
-          cat('變數', variable, '含有NA值，但已省略輸出')
+        observation.not.na <- observation[!is.na(observation)]
+        if (length(observation.not.na) != length(observation)){
+          cat('變數', variable, '含有NA值，但已省略輸出\n')
         }
       }
       options(warn = -1)
@@ -71,18 +79,17 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
         for (i in 1:dim(dataset)[1]) {
           obs <- dataset[i, variable]
           if (is.na(obs)){
-            if (NA_obs_out == FALSE){
+            if (NA_obs_out == TRUE){
               cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值為 Missing Data \n')
             }
           }else{
             if (obs > upper_bound | obs < lower_bound) {
-              # cat('The observed value of variable ', variable, 'in the record with ID ', i, 'is suspected to be an outlier, and the observed value is ', obs, '\n')
               cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值疑似為離群值，觀察值為', obs, '\n')
             }
           }
         }
       }else{
-        cat('該變數觀察值型態非為數值')
+        cat('該變數觀察值型態非為數值\n')
       }
     }
   }else{
