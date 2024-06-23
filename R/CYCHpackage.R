@@ -221,5 +221,5 @@ s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = 
       cat('  填補完成')
     }
   }
-  return(dataset)
+  return(as.data.table(dataset))
 }
