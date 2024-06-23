@@ -32,6 +32,7 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
   # in_list 需要被檢測的變數名稱，以c('', '')輸入
   # out_list 不被檢測的變數名稱，以c('', '')輸入
 
+  # dataset <- DT.id
   # ID_name <- 'ID'
   # sig_num <- 3
   # NA_obs_out <- FALSE
@@ -57,6 +58,9 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
     for (variable in in_list) {
       # variable <- 'sodium'
       # variable <- 'EF'
+      # variable <- 'life'
+      # variable <- 'birthday'
+      # variable <- 'age'
       cat('\n')
       cat(variable, '\n')
       dataset <- as.data.frame(dataset)
@@ -69,7 +73,10 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
       }
       options(warn = -1)
       mean_value <- mean(observation, na.rm = TRUE)
-      standard_deviation <- sd(observation, na.rm = TRUE)
+      standard_deviation <- try(sd(observation, na.rm = TRUE), silent = TRUE)
+      if ('try-error' %in% class(standard_deviation)){
+        standard_deviation <- NA
+      }
       options(warn = 1)
       upper_bound <- mean_value + standard_deviation * sig_num
       lower_bound <- mean_value - standard_deviation * sig_num
