@@ -1,7 +1,7 @@
 # Package: CYCHpackage
 # Type: Package
 # Title: Some Statistical method for research
-# Version: 0.5.0
+# Version: 0.6.0
 # Author: Sheng-You Su Assistant Research Fellow
 # Maintainer: The package maintainer <cych15334@gmail.com>
 # Description: 0.1.0 function addition 's.dc.outlier_detector'
@@ -12,6 +12,7 @@
 #              0.3.1 function 's.dc.outlier_detector' modifty NA_omit
 #              0.4.0 function 's.dc.missing_imputation' modifty donot print dataset
 #              0.5.0 function addition 's.dc.missing_detector'
+#              0.6.0 function addition 's.dc.labeled'
 # License: R 4.3.2 data.table 1.15.4
 # Encoding: UTF-8
 # LazyData: true
@@ -23,7 +24,7 @@ library(bazar)
 # s.dc ----
 # data clean ----
 # 異常值偵測 ----
-s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, in_list = NULL, out_list = NULL) {
+s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, in_list = NULL, out_list = NULL) {
   # 參數名稱定義
   # dataset 要檢查離群值的dataset名稱
   # ID_name ID不被納入檢測，以'字串'型態輸入
@@ -32,15 +33,16 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
   # in_list 需要被檢測的變數名稱，以c('', '')輸入
   # out_list 不被檢測的變數名稱，以c('', '')輸入
 
-  # dataset <- DT.id
+  # DT <- DT.id
   # ID_name <- 'ID'
   # sig_num <- 3
   # NA_obs_out <- FALSE
   # in_list <- colnames(dataset)
   # out_list <- NULL
 
+  dataset <- copy(DT)
+
   if (ID_name %in% colnames(dataset)){
-    dataset <- as.data.table(dataset)
     out_list <- append(out_list, ID_name)
 
     # 整理需要被檢測的變數
@@ -63,7 +65,6 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
       # variable <- 'age'
       cat('\n')
       cat(variable, '\n')
-      dataset <- as.data.frame(dataset)
       observation <- dataset[[variable]]
       if (NA_obs_out == FALSE){
         observation.not.na <- observation[!is.na(observation)]
@@ -84,7 +85,8 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
       if ((is.na(upper_bound) & is.na(lower_bound)) != TRUE){
         # 針對各觀察值檢測其是否超出離群值範圍
         for (i in 1:dim(dataset)[1]) {
-          obs <- dataset[i, variable]
+          # i <- 1
+          obs <- dataset[i, ..variable][[1]]
           if (is.na(obs)){
             if (NA_obs_out == TRUE){
               cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值為 Missing Data \n')
@@ -106,18 +108,20 @@ s.dc.outlier_detector <- function(dataset, ID_name = 'ID', sig_num = 3, NA_obs_o
 
 
 # 遺漏值偵測 ----
-s.dc.missing_detector <- function(dataset, ID_name, listout_col = NULL, NA_obs_out = FALSE){
+s.dc.missing_detector <- function(DT, ID_name, listout_col = NULL, NA_obs_out = FALSE){
   # 參數名稱定義
   # dataset 要檢查遺漏值的dataset名稱
   # ID_name ID不被納入檢測，以'字串'型態輸入
   # listout_col 檢測過程中需列出參考的欄位，以c('', '')輸入
   # NA_obs_out 檢測過程中是否列出NA的觀察值
 
-  # dataset <- DT.exam
+  # DT <- DT.exam
   # ID_name <- 'ID'
   # listout_col <- NULL
   # NA_obs_out <- TRUE
 
+  dataset <- copy(DT)
+  # 以下未修改
   if (ID_name %in% colnames(dataset)){
     if (is.null(listout_col)){
       listout_col <- colnames(dataset)
@@ -229,4 +233,35 @@ s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = 
     }
   }
   return(as.data.table(dataset))
+}
+
+
+s.dc.labeled <- function(DT, label_colName, before_labeled, after_labeled, rawCol_remove = FALSE){
+  # dataset <- DT.id
+  # label_colName <- 'life'
+  # before_labeled <- c('VD', 'D', 'N', 'S', 'VS')
+  # after_labeled <- 1:5
+  dataset <- copy(DT)
+  if (label_colName %in% colnames(dataset)){
+    if (length(before_labeled) == length(after_labeled)){
+      new_var <- paste0(label_colName, '_n')
+      dataset[, (new_var) := 0]
+      for (i in 1:length(before_labeled)){
+        # i <- 1
+        var <- label_colName
+        dataset[get(var) == before_labeled[i], (new_var) := after_labeled[i]]
+      }
+    }else{
+      stop('before_labeled與after_labeled必須有一一對應')
+    }
+  }else{
+    stop('資料集中無要Encoding的變數，請先確認label_colName為dataset中的變數名稱')
+  }
+
+  if (rawCol_remove == TRUE){
+    dataset[, (label_colName) := NULL]
+    setnames(dataset, new_var, label_colName)
+  }
+
+  return(dataset)
 }
