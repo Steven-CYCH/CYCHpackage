@@ -1,7 +1,7 @@
 Package: CYCHpackage
 Type: Package
 Title: Some Statistical method for research
-Version: 0.6.0
+Version: 0.7.0
 Author: Sheng-You Su Assistant Research Fellow
 Maintainer: The package maintainer <cych15334@gmail.com>
 Description: 0.1.0 function addition 's.dc.outlier_detector'
@@ -14,7 +14,7 @@ Description: 0.1.0 function addition 's.dc.outlier_detector'
              0.4.0 function addition 's.dc.missing_imputation'
              0.5.0 function addition 's.dc.missing_detector'
              0.6.0 function addition 's.do.labeled'
-             0.6.0 function addition 's.do.dummy'
+             0.7.0 function addition 's.do.dummy'
 License: What license is it under?
 Depends:R (>= 4.3.2),
         data.table (>= 1.15.4),

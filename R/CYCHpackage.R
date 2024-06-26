@@ -217,7 +217,7 @@ s.dc.missing_imputation <- function(DT, impute_list = NULL, exclude_list = NULL,
 
 # s.do ----
 # Data organization ----
-# 有序資料的Label Encoding ----
+# 有序類別的Label Encoding ----
 s.do.labeled <- function(DT, label_colName, before_labeled, after_labeled, rawCol_remove = FALSE){
   # DT <- DT.id
   # label_colName <- 'life'
