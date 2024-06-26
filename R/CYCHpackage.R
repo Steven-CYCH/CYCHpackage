@@ -17,9 +17,10 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
   # in_list <- colnames(dataset)
   # out_list <- NULL
 
-  dataset <- copy(as.data.table(DT))
+  dataset <- copy(DT)
 
   if (ID_name %in% colnames(dataset)){
+    dataset <- as.data.table(dataset)
     out_list <- append(out_list, ID_name)
 
     # 整理需要被檢測的變數
@@ -42,6 +43,7 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
       # variable <- 'age'
       cat('\n')
       cat(variable, '\n')
+      dataset <- as.data.frame(dataset)
       observation <- dataset[[variable]]
       if (NA_obs_out == FALSE){
         observation.not.na <- observation[!is.na(observation)]
@@ -62,8 +64,7 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
       if ((is.na(upper_bound) & is.na(lower_bound)) != TRUE){
         # 針對各觀察值檢測其是否超出離群值範圍
         for (i in 1:dim(dataset)[1]) {
-          # i <- 1
-          obs <- dataset[i, (variable)][[1]]
+          obs <- dataset[i, variable]
           if (is.na(obs)){
             if (NA_obs_out == TRUE){
               cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值為 Missing Data \n')
