@@ -237,6 +237,9 @@ s.dc.missing_imputation <- function(DT, impute_list = NULL, exclude_list = NULL,
   return(as.data.table(dataset))
 }
 
+#' @importFrom data.table ":="
+NULL
+
 # s.do ----
 # Data organization ----
 s.do.labeled <- function(DT, label_colName, before_labeled, after_labeled, rawCol_remove = FALSE){
