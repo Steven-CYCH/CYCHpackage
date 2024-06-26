@@ -40,7 +40,7 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
   # in_list <- colnames(dataset)
   # out_list <- NULL
 
-  dataset <- copy(DT)
+  dataset <- copy(as.data.table(DT))
 
   if (ID_name %in% colnames(dataset)){
     out_list <- append(out_list, ID_name)
@@ -120,7 +120,7 @@ s.dc.missing_detector <- function(DT, ID_name, listout_col = NULL, NA_obs_out = 
   # listout_col <- NULL
   # NA_obs_out <- TRUE
 
-  dataset <- copy(DT)
+  dataset <- copy(as.data.table(DT))
   # 以下未修改
   if (ID_name %in% colnames(dataset)){
     if (is.null(listout_col)){
@@ -171,11 +171,13 @@ s.dc.missing_detector <- function(DT, ID_name, listout_col = NULL, NA_obs_out = 
 }
 
 # 樣本遺漏刪除處理 ----
-s.dc.sample_missing <- function(dataset, deleting_ratio = 0.1){
+s.dc.sample_missing <- function(DT, deleting_ratio = 0.1){
   # 參數名稱定義
   # dataset 要檢查遺漏值的dataset名稱，以data.table形式輸入
   # deleting_ratio 樣本觀察值超過該比例的遺失刪除，以小數輸入
   # The reference doi is：10.1007/s00432-022-04063-5
+
+  dataset <- copy(as.data.table(DT))
 
   dataset <- cbind(cacheID = 1:dim(dataset)[1], dataset)
   analysis_transpose <- data.table(t(dataset))
@@ -191,7 +193,7 @@ s.dc.sample_missing <- function(dataset, deleting_ratio = 0.1){
 
 
 # 遺漏填補處理 ----
-s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = NULL, impute_method = 'mean', decimal = 2) {
+s.dc.missing_imputation <- function(DT, impute_list = NULL, exclude_list = NULL, impute_method = 'mean', decimal = 2) {
   # 參數名稱定義
   # dataset 要填補的dataset名稱
   # impute_list 需要做填補的變數名稱，不可包含ID
@@ -199,7 +201,7 @@ s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = 
   # impute_method 做填補的方法，可選mean(平均)、median(中位數)或mode(眾數)
   # decimal 小數位數
 
-  dataset <- as.data.table(dataset)
+  dataset <- copy(as.data.table(DT))
 
   # 整理需要被填補的變數
   if (is.null(impute_list) & is.null(exclude_list)){
@@ -235,13 +237,16 @@ s.dc.missing_imputation <- function(dataset, impute_list = NULL, exclude_list = 
   return(as.data.table(dataset))
 }
 
-
-s.dc.labeled <- function(DT, label_colName, before_labeled, after_labeled, rawCol_remove = FALSE){
+# s.do ----
+# Data organization ----
+s.do.labeled <- function(DT, label_colName, before_labeled, after_labeled, rawCol_remove = FALSE){
   # dataset <- DT.id
   # label_colName <- 'life'
   # before_labeled <- c('VD', 'D', 'N', 'S', 'VS')
   # after_labeled <- 1:5
-  dataset <- copy(DT)
+
+  dataset <- copy(as.data.table(DT))
+
   if (label_colName %in% colnames(dataset)){
     if (length(before_labeled) == length(after_labeled)){
       new_var <- paste0(label_colName, '_n')
