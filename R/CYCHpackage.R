@@ -1,26 +1,3 @@
-# Package: CYCHpackage
-# Type: Package
-# Title: Some Statistical method for research
-# Version: 0.6.0
-# Author: Sheng-You Su Assistant Research Fellow
-# Maintainer: The package maintainer <cych15334@gmail.com>
-# Description: 0.1.0 function addition 's.dc.outlier_detector'
-#              0.1.1 function 's.dc.outlier_detector' modifty error massage
-#              0.2.0 function addition 's.dc.outlier_detector'
-#              0.2.1 function 's.dc.outlier_detector' rename from 's.dc.var_outlier'
-#              0.3.0 function addition 's.dc.sample_missing'
-#              0.3.1 function 's.dc.outlier_detector' modifty NA_omit
-#              0.4.0 function 's.dc.missing_imputation' modifty donot print dataset
-#              0.5.0 function addition 's.dc.missing_detector'
-#              0.6.0 function addition 's.dc.labeled'
-# License: What license is it under?
-# Encoding: UTF-8
-# LazyData: true
-
-library(data.table)
-library(DataExplorer)
-library(bazar)
-
 # s.dc ----
 # data clean ----
 # 異常值偵測 ----
@@ -240,6 +217,7 @@ s.dc.missing_imputation <- function(DT, impute_list = NULL, exclude_list = NULL,
 
 # s.do ----
 # Data organization ----
+# 有序資料的Label Encoding ----
 s.do.labeled <- function(DT, label_colName, before_labeled, after_labeled, rawCol_remove = FALSE){
   # DT <- DT.id
   # label_colName <- 'life'
@@ -274,4 +252,34 @@ s.do.labeled <- function(DT, label_colName, before_labeled, after_labeled, rawCo
   }
 
   return(dataset)
+}
+
+# 無序類別的Dummy Variable ----
+s.do.dummy <- function(DT, dummy_col_List, not_dummy_col_List = NULL, rawCol_remove = TRUE){
+  # DT <- DT.id
+  # dummy_col_List <- c('sex', 'race')
+  # not_dummy_col_List = c('ID', 'birthday', 'sex')
+  # rawCol_remove = TRUE
+
+  if (!('data.table' %in% class(DT))){
+    DT <- as.data.table(DT)
+  }
+
+  DT <- copy(DT)
+
+  if (all(dummy_col_List %in% colnames(DT)) == TRUE){
+    if (is.null(dummy_col_List)){
+      stop('請輸入欲設定啞巴變量(dummy variable)的變數名稱')
+    }else if (is.null(not_dummy_col_List)){
+      DT <- dummy_cols(DT, select_columns = dummy_col_List, remove_most_frequent_dummy = TRUE, remove_selected_columns = rawCol_remove)
+    }else if (is.null(not_dummy_col_List) == FALSE){
+      dummy_col_List <- dummy_col_List[!(dummy_col_List %in% not_dummy_col_List)]
+      DT <- dummy_cols(DT, select_columns = dummy_col_List, remove_most_frequent_dummy = TRUE, remove_selected_columns = rawCol_remove)
+    }
+    # reference remove 的功能現正開發中
+  }else{
+    stop('資料集中無要Dummy的變數，請先確認label_colName為dataset中的變數名稱')
+  }
+
+  return(DT)
 }

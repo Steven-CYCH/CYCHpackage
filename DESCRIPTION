@@ -18,6 +18,7 @@ License: What license is it under?
 Depends:R (>= 4.3.2),
         data.table (>= 1.15.4),
         DataExplorer (>= 0.8.3),
-        bazar (>= 1.0.11)
+        bazar (>= 1.0.11),
+        fastDummies (>= 1.7.3)
 Encoding: UTF-8
 LazyData: true
