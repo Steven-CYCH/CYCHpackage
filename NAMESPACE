@@ -1,2 +1,2 @@
 exportPattern("^[[:alpha:]]+")
-.datatable.aware = TRUE
+importFrom(data.table,":=")
