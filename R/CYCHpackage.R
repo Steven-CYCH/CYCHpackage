@@ -240,12 +240,16 @@ s.dc.missing_imputation <- function(DT, impute_list = NULL, exclude_list = NULL,
 # s.do ----
 # Data organization ----
 s.do.labeled <- function(DT, label_colName, before_labeled, after_labeled, rawCol_remove = FALSE){
-  # dataset <- DT.id
+  # DT <- DT.id
   # label_colName <- 'life'
   # before_labeled <- c('VD', 'D', 'N', 'S', 'VS')
   # after_labeled <- 1:5
 
-  dataset <- copy(as.data.table(DT))
+  if (!('data.table' %in% class(DT))){
+    DT <- as.data.table(DT)
+  }
+
+  dataset <- copy(DT)
 
   if (label_colName %in% colnames(dataset)){
     if (length(before_labeled) == length(after_labeled)){
