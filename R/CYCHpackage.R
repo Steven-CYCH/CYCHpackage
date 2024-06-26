@@ -237,8 +237,6 @@ s.dc.missing_imputation <- function(DT, impute_list = NULL, exclude_list = NULL,
   return(as.data.table(dataset))
 }
 
-#' @importFrom data.table ":="
-NULL
 
 # s.do ----
 # Data organization ----
