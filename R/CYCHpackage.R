@@ -13,7 +13,7 @@
 #              0.4.0 function 's.dc.missing_imputation' modifty donot print dataset
 #              0.5.0 function addition 's.dc.missing_detector'
 #              0.6.0 function addition 's.dc.labeled'
-# License: R 4.3.2 data.table 1.15.4
+# License: What license is it under?
 # Encoding: UTF-8
 # LazyData: true
 
