@@ -15,5 +15,9 @@ Description: 0.1.0 function addition 's.dc.outlier_detector'
              0.5.0 function addition 's.dc.missing_detector'
              0.6.0 function addition 's.dc.labeled'
 License: What license is it under?
+Depends:R (>= 4.3.2),
+        data.table (>= 1.15.4),
+        DataExplorer (>= 0.8.3),
+        bazar (>= 1.0.11)
 Encoding: UTF-8
 LazyData: true
