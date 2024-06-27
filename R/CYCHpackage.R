@@ -149,7 +149,7 @@ s.dc.missing_detector <- function(DT, ID_name, listout_col = NULL, NA_obs_out = 
 }
 
 # 樣本遺漏刪除處理 ----
-s.dc.sample_missing <- function(DT, deleting_ratio = 0.1){
+s.dc.sample_missing <- function(DT, deleting_ratio_over = 0.1){
   # 參數名稱定義
   # dataset 要檢查遺漏值的dataset名稱，以data.table形式輸入
   # deleting_ratio 樣本觀察值超過該比例的遺失刪除，以小數輸入
@@ -162,7 +162,7 @@ s.dc.sample_missing <- function(DT, deleting_ratio = 0.1){
   names(analysis_transpose) <- as.character(dataset$cacheID)
   analysis_m <- profile_missing(analysis_transpose)
   analysis_m <- as.data.frame(analysis_m)
-  include_pt <- as.numeric(as.vector(analysis_m[analysis_m['pct_missing'] <= deleting_ratio, colnames(analysis_m)[1]]))
+  include_pt <- as.numeric(as.vector(analysis_m[analysis_m['pct_missing'] <= deleting_ratio_over, colnames(analysis_m)[1]]))
   dataset <- dataset[dataset$cacheID %in% include_pt, ]
   dataset <- subset(dataset, select = -cacheID)
 
