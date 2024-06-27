@@ -86,7 +86,7 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
 
 
 # 遺漏值偵測 ----
-s.dc.missing_detector <- function(DT, ID_name, listout_col = NULL, NA_obs_out = FALSE){
+s.dc.missing_detector <- function(DT, listout_col = NULL, NA_obs_out = FALSE){
   # 參數名稱定義
   # dataset 要檢查遺漏值的dataset名稱
   # ID_name ID不被納入檢測，以'字串'型態輸入
@@ -100,51 +100,48 @@ s.dc.missing_detector <- function(DT, ID_name, listout_col = NULL, NA_obs_out = 
 
   dataset <- copy(as.data.table(DT))
   # 以下未修改
-  if (ID_name %in% colnames(dataset)){
-    if (is.null(listout_col)){
-      listout_col <- colnames(dataset)
-    }
 
-    DT <- as.data.frame(dataset)
-    missing_count <- 0
-    for (colName in colnames(DT)[-which(colnames(DT) == ID_name)]){
-      # colName <- 'Height'
-      # colName <- 'GPT'
-      # print(colName)
-      obs <- DT[colName][[1]]
-      typeis <- class(obs)
-      if (typeis %in% c('integer', 'numeric')){
-        missDT <- DT[is.na(obs) == TRUE, listout_col]
+  if (is.null(listout_col)){
+    listout_col <- colnames(dataset)
+  }
+
+  DT <- as.data.frame(dataset)
+  missing_count <- 0
+  for (colName in colnames(DT)){
+    # colName <- 'Height'
+    # colName <- 'GPT'
+    # print(colName)
+    obs <- DT[colName][[1]]
+    typeis <- class(obs)
+    if (typeis %in% c('integer', 'numeric')){
+      missDT <- DT[is.na(obs) == TRUE, listout_col]
+    }else{
+      if (dim(DT[obs == '', ])[1] != 0){
+        missDT <- DT[obs == '', listout_col]
       }else{
-        if (dim(DT[obs == '', ])[1] != 0){
-          missDT <- DT[obs == '', listout_col]
-        }else{
-          missDT <- DT[is.na(obs) == TRUE, listout_col]
-        }
-      }
-
-
-      if (dim(missDT)[1] != 0){
-        missing_count <- missing_count + 1
-        missing.ratio <- (dim(missDT)[1]/dim(DT)[1]) * 100
-        waring <- paste0('變數 ', colName, ' 中含有', round(missing.ratio, digits = 2), '%的遺漏值')
-        if (missing.ratio > 50){
-          waring <- paste0(waring, '，比例超過50%，建議刪除')
-          cat(waring, '\n')
-        }else{
-          cat(waring, '\n')
-        }
-        if (NA_obs_out == TRUE){
-          print(missDT)
-        }
-        cat('\n')
+        missDT <- DT[is.na(obs) == TRUE, listout_col]
       }
     }
-    if (missing_count <= 0){
-      cat('該資料集無Missing Data\n')
+
+
+    if (dim(missDT)[1] != 0){
+      missing_count <- missing_count + 1
+      missing.ratio <- (dim(missDT)[1]/dim(DT)[1]) * 100
+      waring <- paste0('變數 ', colName, ' 中含有', round(missing.ratio, digits = 2), '%的遺漏值')
+      if (missing.ratio > 50){
+        waring <- paste0(waring, '，比例超過50%，建議刪除')
+        cat(waring, '\n')
+      }else{
+        cat(waring, '\n')
+      }
+      if (NA_obs_out == TRUE){
+        print(missDT)
+      }
+      cat('\n')
     }
-  }else{
-    stop('親愛的朋友，你的ID不是這個名字喔！')
+  }
+  if (missing_count <= 0){
+    cat('該資料集無Missing Data\n')
   }
 }
 
