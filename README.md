@@ -19,7 +19,7 @@
 #### Arguments ####
 |參數名稱|參數敘述|預設值|參數型態|
 |:----------|:----------|:----------:|:----------:|
-|<font face="Lucida Console">dataset</font>|輸入要檢查離群值或遺漏的資料集名稱|\t|data.table|
+|<font face="Lucida Console">dataset</font>|輸入要檢查離群值或遺漏的資料集名稱|           |data.table|
 |<font face="Lucida Console">ID_name</font>|辨識樣本的唯一鍵值|<font face="Lucida Console">"ID"</font>|character|
 |<font face="Lucida Console">sig_num</font>|辨識離群值時，預期的標準差倍數，範圍[mean - sig_num * sd, mean + sig_num * sd]以外的觀察值會被列入候選離群值被印出|<font face="Lucida Console">3</font>|numeric|
 |<font face="Lucida Console">NA_obs_out</font>|是否印出具有遺漏值的觀察值|<font face="Lucida Console">FALSE</font>|boolean|
