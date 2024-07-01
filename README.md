@@ -40,7 +40,7 @@
 #### Arguments ####
 |參數名稱|參數敘述|預設值|參數型態|
 |:----------|:----------|:----------:|:----------:|
-|<font face="Lucida Console">dataset</font>|輸入要檢查離群值或遺漏值的資料集名稱||data.table|
+|<font face="Lucida Console">dataset</font>|輸入要檢查離群值或遺漏值的資料集名稱|     |data.table|
 |<font face="Lucida Console">listout_col</font>|**要**被納入檢查遺漏值的變數名稱|<font face="Lucida Console">NULL</font>|vector|
 |<font face="Lucida Console">NA_obs_out</font>|是否印出具有遺漏值的觀察值|<font face="Lucida Console">FALSE</font>|boolean|
 #### References ####
