@@ -1,7 +1,7 @@
 Package: CYCHpackage
 Type: Package
 Title: Some Statistical method for research
-Version: 0.8.0
+Version: 1.0.0
 Author: Sheng-You Su Assistant Research Fellow
 Maintainer: The package maintainer <cych15334@gmail.com>
 Description: 0.1.0 function addition 's.dc.outlier_detector'
