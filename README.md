@@ -1,9 +1,10 @@
 # CYCHpackage 說明書 #
 **Package：** CYCHpackage  
-**Title：** Some Statistical method for research  
+**Title：** Some Statistical method for medical research  
 **Version：** 0.5.0  
 **Author：** Sheng-You Su Assistant Research Fellow  
 **Email：** cych15334@gmail.com  
+**Dependence Packages：**
 
 ## **Data Clean** ##
 
