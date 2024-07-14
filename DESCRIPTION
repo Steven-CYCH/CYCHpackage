@@ -16,6 +16,7 @@ Description: 0.1.0 function addition 's.dc.outlier_detector'
              0.6.0 function addition 's.do.labeled'
              0.7.0 function addition 's.do.dummy'
              0.8.0 Revisions before publication
+             1.0.1 function 's.dc.outlier_detector' modifty string output NA
 License: What license is it under?
 Depends:R (>= 4.3.2),
         data.table (>= 1.15.4),
