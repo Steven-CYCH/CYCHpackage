@@ -1,11 +1,27 @@
 Package: CYCHpackage
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: Some Statistical method for research
+Version: 1.0.1
+Author: Sheng-You Su Assistant Research Fellow
+Maintainer: The package maintainer <cych15334@gmail.com>
+Description: 0.1.0 function addition 's.dc.outlier_detector'
+             0.1.1 function 's.dc.outlier_detector' modifty error massage
+             0.2.0 function addition 's.dc.outlier_detector'
+             0.2.1 function 's.dc.outlier_detector' rename to 's.dc.var_outlier'
+             0.3.0 function addition 's.dc.sample_missing'
+             0.3.1 function 's.dc.outlier_detector' modifty NA_omit
+             0.3.2 function 's.dc.var_outlier' modifty donot print dataset
+             0.4.0 function addition 's.dc.missing_imputation'
+             0.5.0 function addition 's.dc.missing_detector'
+             0.6.0 function addition 's.do.labeled'
+             0.7.0 function addition 's.do.dummy'
+             0.8.0 Revisions before publication
+             1.0.1 function 's.dc.outlier_detector' modifty string output NA
 License: What license is it under?
+Depends:R (>= 4.3.2),
+        DataExplorer (>= 0.8.3),
+        bazar (>= 1.0.11),
+        fastDummies (>= 1.7.3)
 Encoding: UTF-8
 LazyData: true
+URL:https://github.com/Steven-CYCH/CYCHpackage.git
