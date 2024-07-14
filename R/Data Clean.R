@@ -2,93 +2,94 @@
 # Data Clean Function ----
 # 異常值偵測 ----
 s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, in_list = NULL, out_list = NULL) {
-    # 參數名稱定義
-    # dataset 要檢查離群值的dataset名稱
-    # ID_name ID不被納入檢測，以'字串'型態輸入
-    # sig_num sigma number，欲偵測的標準差倍數，以數值型態輸入
-    # NA_omit 列出離群值的過程中是否一併列出遺漏值(missing)
-    # in_list 需要被檢測的變數名稱，以c('', '')輸入
-    # out_list 不被檢測的變數名稱，以c('', '')輸入
+  # 參數名稱定義
+  # dataset 要檢查離群值的dataset名稱
+  # ID_name ID不被納入檢測，以'字串'型態輸入
+  # sig_num sigma number，欲偵測的標準差倍數，以數值型態輸入
+  # NA_omit 列出離群值的過程中是否一併列出遺漏值(missing)
+  # in_list 需要被檢測的變數名稱，以c('', '')輸入
+  # out_list 不被檢測的變數名稱，以c('', '')輸入
 
-    # DT <- DT.id
-    # ID_name <- 'ID'
-    # sig_num <- 3
-    # NA_obs_out <- FALSE
-    # in_list <- colnames(dataset)
-    # out_list <- NULL
+  # DT <- DT.id
+  # ID_name <- 'ID'
+  # sig_num <- 3
+  # NA_obs_out <- FALSE
+  # in_list <- colnames(dataset)
+  # out_list <- NULL
 
-    dataset <- copy(DT)
+  dataset <- copy(DT)
 
-    if (ID_name %in% colnames(dataset)){
-        dataset <- as.data.table(dataset)
-        out_list <- append(out_list, ID_name)
+  if (ID_name %in% colnames(dataset)){
+    dataset <- as.data.table(dataset)
+    out_list <- append(out_list, ID_name)
 
-        # 整理需要被檢測的變數
-        if (is.null(in_list)){
-            in_list <- colnames(dataset)[-which(colnames(dataset) %in% out_list)]
-        }else{
-            if (any(in_list %in% out_list) == TRUE){
-                in_list <- in_list[-which(in_list %in% out_list)]
-            }else{
-                in_list <- in_list
-            }
-        }
-
-        # 設定離群值的上下界
-        for (variable in in_list) {
-            # variable <- 'sodium'
-            # variable <- 'EF'
-            # variable <- 'life'
-            # variable <- 'birthday'
-            # variable <- 'age'
-            cat('\n')
-            cat(variable, '\n')
-            dataset <- as.data.frame(dataset)
-            observation <- dataset[[variable]]
-            if (NA_obs_out == FALSE){
-                observation.not.na <- observation[!is.na(observation)]
-                if (length(observation.not.na) != length(observation)){
-                    cat('變數', variable, '含有NA值，但已省略輸出\n')
-                }
-            }
-            options(warn = -1)
-            mean_value <- mean(observation, na.rm = TRUE)
-            standard_deviation <- try(sd(observation, na.rm = TRUE), silent = TRUE)
-            if ('try-error' %in% class(standard_deviation)){
-                standard_deviation <- NA
-            }
-            options(warn = 1)
-            upper_bound <- mean_value + standard_deviation * sig_num
-            lower_bound <- mean_value - standard_deviation * sig_num
-
-            if ((is.na(upper_bound) & is.na(lower_bound)) != TRUE){
-                # 針對各觀察值檢測其是否超出離群值範圍
-                for (i in 1:dim(dataset)[1]) {
-                    obs <- dataset[i, variable]
-                    if (is.na(obs)){
-                        if (NA_obs_out == TRUE){
-                            cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值為 Missing Data \n')
-                        }
-                    }else{
-                        if (obs > upper_bound | obs < lower_bound) {
-                            cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值疑似為離群值，觀察值為', obs, '\n')
-                        }
-                    }
-                }
-            }else{
-              cat('該變數觀察值型態非為數值\n')
-              for (i in 1:dim(dataset)[1]) {
-                obs <- dataset[i, variable]
-                if (is.na(obs)){
-                  if (NA_obs_out == TRUE){
-                    cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值為 Missing Data \n')
-                  }
-                }
-              }
-            }
+    # 整理需要被檢測的變數
+    if (is.null(in_list)){
+      in_list <- colnames(dataset)[-which(colnames(dataset) %in% out_list)]
     }else{
-        stop('親愛的朋友，你的ID不是這個名字喔！')
+      if (any(in_list %in% out_list) == TRUE){
+        in_list <- in_list[-which(in_list %in% out_list)]
+      }else{
+        in_list <- in_list
+      }
     }
+
+    # 設定離群值的上下界
+    for (variable in in_list) {
+      # variable <- 'sodium'
+      # variable <- 'EF'
+      # variable <- 'life'
+      # variable <- 'birthday'
+      # variable <- 'age'
+      cat('\n')
+      cat(variable, '\n')
+      dataset <- as.data.frame(dataset)
+      observation <- dataset[[variable]]
+      if (NA_obs_out == FALSE){
+        observation.not.na <- observation[!is.na(observation)]
+        if (length(observation.not.na) != length(observation)){
+          cat('變數', variable, '含有NA值，但已省略輸出\n')
+        }
+      }
+      options(warn = -1)
+      mean_value <- mean(observation, na.rm = TRUE)
+      standard_deviation <- try(sd(observation, na.rm = TRUE), silent = TRUE)
+      if ('try-error' %in% class(standard_deviation)){
+        standard_deviation <- NA
+      }
+      options(warn = 1)
+      upper_bound <- mean_value + standard_deviation * sig_num
+      lower_bound <- mean_value - standard_deviation * sig_num
+
+      if ((is.na(upper_bound) & is.na(lower_bound)) != TRUE){
+        # 針對各觀察值檢測其是否超出離群值範圍
+        for (i in 1:dim(dataset)[1]) {
+          obs <- dataset[i, variable]
+          if (is.na(obs)){
+            if (NA_obs_out == TRUE){
+              cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值為 Missing Data \n')
+            }
+          }else{
+            if (obs > upper_bound | obs < lower_bound) {
+              cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值疑似為離群值，觀察值為', obs, '\n')
+            }
+          }
+        }
+      }else{
+        cat('該變數觀察值型態非為數值\n')
+        for (i in 1:dim(dataset)[1]) {
+          obs <- dataset[i, variable]
+          if (is.na(obs)){
+            if (NA_obs_out == TRUE){
+              cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值為 Missing Data \n')
+            }
+          }
+        }
+      }
+    }
+  }else{
+    stop('親愛的朋友，你的ID不是這個名字喔！')
+  }
 }
 
 
