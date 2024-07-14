@@ -19,7 +19,6 @@ Description: 0.1.0 function addition 's.dc.outlier_detector'
              1.0.1 function 's.dc.outlier_detector' modifty string output NA
 License: What license is it under?
 Depends:R (>= 4.3.2),
-        data.table (>= 1.15.4),
         DataExplorer (>= 0.8.3),
         bazar (>= 1.0.11),
         fastDummies (>= 1.7.3)
