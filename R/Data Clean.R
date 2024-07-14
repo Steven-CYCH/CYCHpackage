@@ -62,7 +62,7 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
           }
         }
       }else{
-        cat('該變數觀察值型態非為數值\n')
+        cat('該變數觀察值型態非為數值，無法檢測離群值\n')
         for (i in 1:dim(dataset)[1]) {
           obs <- dataset[i, variable]
           if (as.character(obs) == ''){
