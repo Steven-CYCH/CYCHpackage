@@ -2,21 +2,6 @@
 # Data Clean Function ----
 # 異常值偵測 ----
 s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, in_list = NULL, out_list = NULL) {
-  # 參數名稱定義
-  # dataset 要檢查離群值的dataset名稱
-  # ID_name ID不被納入檢測，以'字串'型態輸入
-  # sig_num sigma number，欲偵測的標準差倍數，以數值型態輸入
-  # NA_omit 列出離群值的過程中是否一併列出遺漏值(missing)
-  # in_list 需要被檢測的變數名稱，以c('', '')輸入
-  # out_list 不被檢測的變數名稱，以c('', '')輸入
-
-  # DT <- DT.id
-  # ID_name <- 'ID'
-  # sig_num <- 3
-  # NA_obs_out <- FALSE
-  # in_list <- colnames(dataset)
-  # out_list <- NULL
-
   dataset <- copy(DT)
 
   if (ID_name %in% colnames(dataset)){
@@ -41,12 +26,13 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
       # variable <- 'life'
       # variable <- 'birthday'
       # variable <- 'age'
+      # variable <- 'factorB'
       cat('\n')
       cat(variable, '\n')
       dataset <- as.data.frame(dataset)
       observation <- dataset[[variable]]
       if (NA_obs_out == FALSE){
-        observation.not.na <- observation[!is.na(observation)]
+        observation.not.na <- observation[!is.na(observation) & as.character(observation) != '']
         if (length(observation.not.na) != length(observation)){
           cat('變數', variable, '含有NA值，但已省略輸出\n')
         }
@@ -79,7 +65,7 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
         cat('該變數觀察值型態非為數值\n')
         for (i in 1:dim(dataset)[1]) {
           obs <- dataset[i, variable]
-          if (is.na(obs)){
+          if (as.character(obs) == ''){
             if (NA_obs_out == TRUE){
               cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值為 Missing Data \n')
             }
