@@ -18,8 +18,6 @@ Description: 0.1.0 function addition 's.dc.outlier_detector'
              0.8.0 Revisions before publication
              1.0.1 function 's.dc.outlier_detector' modifty string output NA
 License: What license is it under?
-Depends:R (>= 4.3.2)
-Suggests:data.table (>= 1.15.4), DataExplorer (>= 0.8.3), bazar (>= 1.0.11), fastDummies (>= 1.7.3)
 Encoding: UTF-8
 LazyData: false
 URL:https://github.com/Steven-CYCH/CYCHpackage.git
