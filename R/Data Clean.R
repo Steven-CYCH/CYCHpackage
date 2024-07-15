@@ -65,7 +65,7 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
         cat('該變數觀察值型態非為數值，無法檢測離群值\n')
         for (i in 1:dim(dataset)[1]) {
           obs <- dataset[i, variable]
-          if (as.character(obs) == ''){
+          if (as.character(obs) == '' | is.na(obs)){
             if (NA_obs_out == TRUE){
               cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值為 Missing Data \n')
             }
@@ -125,10 +125,6 @@ s.dc.missing_detector <- function(DT, listout_col = NULL, NA_obs_out = FALSE){
 
 # 樣本遺漏刪除處理 ----
 s.dc.sample_missing <- function(DT, deleting_ratio_over = 0.1){
-    # 參數名稱定義
-    # dataset 要檢查遺漏值的dataset名稱，以data.table形式輸入
-    # deleting_ratio 樣本觀察值超過該比例的遺失刪除，以小數輸入
-    # The reference doi is：10.1007/s00432-022-04063-5
 
     dataset <- copy(as.data.table(DT))
 
