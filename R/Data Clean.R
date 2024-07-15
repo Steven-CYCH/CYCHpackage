@@ -81,19 +81,7 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
 
 # 遺漏值偵測 ----
 s.dc.missing_detector <- function(DT, listout_col = NULL, NA_obs_out = FALSE){
-    # 參數名稱定義
-    # dataset 要檢查遺漏值的dataset名稱
-    # ID_name ID不被納入檢測，以'字串'型態輸入
-    # listout_col 檢測過程中需列出參考的欄位，以c('', '')輸入
-    # NA_obs_out 檢測過程中是否列出NA的觀察值
-
-    # DT <- DT.exam
-    # ID_name <- 'ID'
-    # listout_col <- NULL
-    # NA_obs_out <- TRUE
-
     dataset <- copy(as.data.table(DT))
-    # 以下未修改
 
     if (is.null(listout_col)){
         listout_col <- colnames(dataset)
@@ -102,9 +90,6 @@ s.dc.missing_detector <- function(DT, listout_col = NULL, NA_obs_out = FALSE){
     DT <- as.data.frame(dataset)
     missing_count <- 0
     for (colName in colnames(DT)){
-        # colName <- 'Height'
-        # colName <- 'GPT'
-        # print(colName)
         obs <- DT[colName][[1]]
         typeis <- class(obs)
         if (typeis %in% c('integer', 'numeric')){
@@ -131,7 +116,6 @@ s.dc.missing_detector <- function(DT, listout_col = NULL, NA_obs_out = FALSE){
             if (NA_obs_out == TRUE){
                 print(missDT)
             }
-            cat('\n')
         }
     }
     if (missing_count <= 0){

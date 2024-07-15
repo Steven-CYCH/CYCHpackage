@@ -32,17 +32,58 @@ s.dc.outlier_detector(dataset, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, 
 |in_list|**要**被納入檢查離群值的變數名稱|NULL|vector|
 |out_list|**不要**被納入檢查離群值的變數名稱|NULL|vector|
 
-#### References ####
+<!-- #### References #### -->
 #### Examples ####
 ```R
+# install.packages(c('devtools', 'data.table'))
+library(devtools)
+# devtools::install_github('Steven-CYCH/CYCHpackage')
 library(CYCHpackage)
 library(data.table)
-DT <- as.data.table(data.frame(
+# 建立模擬資料集
+dataset <- as.data.table(data.frame(
   ID = paste0('S', sprintf("%03d", 1:100)),
   conA = sample(c(round(rnorm(95, mean = 5, sd = 1)), c(100, -100), rep(NA, 3))),
   factorB = factor(sample(c(sample(c('A', 'B', 'C'), 90, replace = TRUE), rep('', 10))))
 ))
-s.dc.outlier_detector(DT)
+
+# 預設值結果
+# 3倍標準差以外的觀察值為離群值(sig_num = 3)
+# 遺漏值樣本ID不列出(NA_obs_out = FALSE)
+s.dc.outlier_detector(DT = dataset)
+# 
+# conA 
+# 變數 conA 含有NA值，但已省略輸出
+# ID是 S047 的紀錄中有變數 conA 的觀察值疑似為離群值，觀察值為 100 
+# ID是 S053 的紀錄中有變數 conA 的觀察值疑似為離群值，觀察值為 -100 
+# 
+# factorB 
+# 變數 factorB 含有NA值，但已省略輸出
+# 該變數觀察值型態非為數值，無法檢測離群值
+
+# 4倍標準差以外的觀察值為離群值(sig_num = 4)
+# 遺漏值樣本ID不列出(NA_obs_out = TRUE)
+s.dc.outlier_detector(DT = dataset, sig_num = 4, NA_obs_out = TRUE)
+# 
+# conA 
+# ID是 S014 的紀錄中有變數 conA 的觀察值為 Missing Data 
+# ID是 S042 的紀錄中有變數 conA 的觀察值為 Missing Data 
+# ID是 S047 的紀錄中有變數 conA 的觀察值疑似為離群值，觀察值為 100 
+# ID是 S053 的紀錄中有變數 conA 的觀察值疑似為離群值，觀察值為 -100 
+# ID是 S098 的紀錄中有變數 conA 的觀察值為 Missing Data 
+# 
+# factorB 
+# 該變數觀察值型態非為數值，無法檢測離群值
+# ID是 S019 的紀錄中有變數 factorB 的觀察值為 Missing Data 
+# ID是 S023 的紀錄中有變數 factorB 的觀察值為 Missing Data 
+# ID是 S042 的紀錄中有變數 factorB 的觀察值為 Missing Data 
+# ID是 S046 的紀錄中有變數 factorB 的觀察值為 Missing Data 
+# ID是 S048 的紀錄中有變數 factorB 的觀察值為 Missing Data 
+# ID是 S052 的紀錄中有變數 factorB 的觀察值為 Missing Data 
+# ID是 S056 的紀錄中有變數 factorB 的觀察值為 Missing Data 
+# ID是 S077 的紀錄中有變數 factorB 的觀察值為 Missing Data 
+# ID是 S082 的紀錄中有變數 factorB 的觀察值為 Missing Data 
+# ID是 S092 的紀錄中有變數 factorB 的觀察值為 Missing Data 
 ```
 
 ### **s.dc.missing_detector** ###
@@ -51,22 +92,69 @@ s.dc.outlier_detector(DT)
 2. 印出有**遺漏值**的樣本觀察值(包含其識別ID)
 
 #### Usage ####
-s.dc.missing_detector(dataset, ID_name, listout_col = NULL, NA_obs_out = FALSE) 
+s.dc.missing_detector(DT, listout_col = NULL, NA_obs_out = FALSE) 
 
 #### Arguments ####
 |參數名稱|參數敘述|預設值|參數型態|
 |:----------|:----------|:----------:|:----------:|
-|dataset|輸入要檢查離群值或遺漏值的資料集名稱|     |data.table|
-|listout_col|**要**被納入檢查遺漏值的變數名稱|NULL|vector|
+|DT|輸入要檢查遺漏值的資料集名稱||data.table|
+|listout_col|**要**被納入檢查遺漏值的變數名稱，若無輸入表示全部列出|NULL|vector|
 |NA_obs_out|是否印出具有遺漏值的觀察值|FALSE|boolean|
 #### References ####
-reference doi is 10.1007/s00432-022-04063-5
+Jung JO, Crnovrsanin N, Wirsik NM, Nienhüser H, Peters L, Popp F, Schulze A, Wagner M, Müller-Stich BP, Büchler MW, Schmidt T. Machine learning for optimized individual survival prediction in resectable upper gastrointestinal cancer. J Cancer Res Clin Oncol. 2023 May;149(5):1691-1702. doi: 10.1007/s00432-022-04063-5. Epub 2022 May 26. PMID: 35616729; PMCID: PMC10097798.
 #### Examples ####
+```R
+# install.packages(c('devtools', 'data.table'))
+library(devtools)
+# devtools::install_github('Steven-CYCH/CYCHpackage')
+library(CYCHpackage)
+library(data.table)
+# 建立模擬資料集
+dataset <- as.data.table(data.frame(
+  ID = paste0('S', sprintf("%03d", 1:100)),
+  conA = sample(c(round(rnorm(95, mean = 5, sd = 1)), c(100, -100), rep(NA, 3))),
+  factorB = factor(sample(c(sample(c('A', 'B', 'C'), 90, replace = TRUE), rep('', 10))))
+))
+
+# 計算各個變數中的遺漏值比率，但不印出遺漏的部分
+s.dc.missing_detector(DT = dataset)
+# 變數 conA 中含有3%的遺漏值 
+# 
+# 變數 factorB 中含有10%的遺漏值 
+
+# 計算各個變數中的遺漏值比率，並印出遺漏的部分
+s.dc.missing_detector(DT = dataset, NA_obs_out = TRUE)
+# 變數 conA 中含有3%的遺漏值 
+# ID conA factorB
+# 32 S032   NA        
+# 45 S045   NA       A
+# 86 S086   NA       C
+# 
+# 變數 factorB 中含有10%的遺漏值 
+# ID conA factorB
+# 4  S004    5        
+# 19 S019    5        
+# 22 S022    3        
+# 24 S024    5        
+# 32 S032   NA        
+# 36 S036    5        
+# 37 S037    7        
+# 77 S077    6        
+# 87 S087    7        
+# 90 S090    4 
+```
 
 ### **s.dc.sample_missing** ###
 #### Description ####
+遺漏值的刪除處理，若該樣本的遺漏值比例(deleting_ratio_over)超過設定的數字，即將該樣本刪除，並需重新assign物件名稱
 #### Usage ####
+DT <- s.dc.sample_missing(DT, deleting_ratio_over = 0.1)
 #### Arguments ####
+|參數名稱|參數敘述|預設值|參數型態|
+|:----------|:----------|:----------:|:----------:|
+|DT|輸入要檢查遺漏值的資料集名稱||data.table|
+|deleting_ratio_over|||float|
+#### Output ####
 #### References ####
 #### Examples ####
 
