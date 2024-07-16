@@ -80,7 +80,7 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
 
 
 # 遺漏值偵測 ----
-s.dc.missing_detectorr <- function(DT, listout_col = NULL, NA_obs_out = FALSE){
+s.dc.missing_detector <- function(DT, listout_col = NULL, NA_obs_out = FALSE){
     DT <- copy(as.data.frame(DT))
     DT <- data.frame(lapply(DT, as.character), stringsAsFactors = FALSE)
     dataset <- copy(as.data.table(DT))
