@@ -1,7 +1,7 @@
 # s.dc ----
 # Data Clean Function ----
 # 異常值偵測 ----
-s.dc.outlier_detectorr <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, in_list = NULL, out_list = NULL) {
+s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, in_list = NULL, out_list = NULL) {
   dataset <- copy(DT)
 
   if (ID_name %in% colnames(dataset)){
