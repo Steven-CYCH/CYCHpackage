@@ -1,7 +1,7 @@
 # s.dc ----
 # Data Clean Function ----
 # 異常值偵測 ----
-s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, in_list = NULL, out_list = NULL) {
+s.dc.outlier_detectorr <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, in_list = NULL, out_list = NULL) {
   dataset <- copy(DT)
 
   if (ID_name %in% colnames(dataset)){
@@ -21,12 +21,6 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
 
     # 設定離群值的上下界
     for (variable in in_list) {
-      # variable <- 'sodium'
-      # variable <- 'EF'
-      # variable <- 'life'
-      # variable <- 'birthday'
-      # variable <- 'age'
-      # variable <- 'factorB'
       cat('\n')
       cat(variable, '\n')
       dataset <- as.data.frame(dataset)
@@ -65,7 +59,7 @@ s.dc.outlier_detector <- function(DT, ID_name = 'ID', sig_num = 3, NA_obs_out = 
         cat('該變數觀察值型態非為數值，無法檢測離群值\n')
         for (i in 1:dim(dataset)[1]) {
           obs <- dataset[i, variable]
-          if (as.character(obs) == ''){
+          if (as.character(obs) == '' | is.na(as.character(obs))){
             if (NA_obs_out == TRUE){
               cat('ID是', dataset[[ID_name]][i], '的紀錄中有變數', variable, '的觀察值為 Missing Data \n')
             }
