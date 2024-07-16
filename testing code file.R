@@ -11,7 +11,7 @@ dataset <- as.data.table(data.frame(
   conC = sample(c(round(rnorm(93, mean = 5, sd = 1)), c(1000, -1000), rep(NA, 5))),
   strD = factor(sample(c(sample(c('A', 'B', 'C'), 90, replace = TRUE), rep(NA_character_, 10)))),
   strE = sample(c(sample(c('AA', 'BB', 'CC'), 80, replace = TRUE), rep(NA_character_, 20))),
-  dateF = sample(c(sample(seq.Date(as.Date("2020-01-01"), as.Date("2023-12-31"), by = "day"), 90, replace = TRUE), rep(NA, 10)))
+  dateF = sample(c(sample(seq.Date(as.Date("2020-01-01"), as.Date("2023-12-31"), by = "day"), 30, replace = TRUE), rep(NA, 70)))
 ))
 
 # s.dc.outlier_detector ----
@@ -27,31 +27,12 @@ s.dc.outlier_detector(DT = dataset, sig_num = 4, NA_obs_out = TRUE)
 
 
 # s.dc.missing_detector ----
-處理一下文字型態跟日期型態
 # 預設值結果，僅列出變數的遺漏值比例
 s.dc.missing_detector(DT = dataset)
-# 變數 conA 中含有3%的遺漏值
-#
-# 變數 factorB 中含有10%的遺漏值
+
+# 列出變數的遺漏值比例，並列出包含NA值樣本的其他觀察值
 s.dc.missing_detector(DT = dataset, NA_obs_out = TRUE)
-# 變數 conA 中含有3%的遺漏值
-# ID conA factorB
-# 32 S032   NA
-# 45 S045   NA       A
-# 86 S086   NA       C
-#
-# 變數 factorB 中含有10%的遺漏值
-# ID conA factorB
-# 4  S004    5
-# 19 S019    5
-# 22 S022    3
-# 24 S024    5
-# 32 S032   NA
-# 36 S036    5
-# 37 S037    7
-# 77 S077    6
-# 87 S087    7
-# 90 S090    4
+
 
 nrow(dataset)
 newDT01 <- s.dc.sample_missing(DT = dataset)
