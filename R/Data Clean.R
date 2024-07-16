@@ -92,13 +92,14 @@ s.dc.missing_detector <- function(DT, listout_col = NULL, NA_obs_out = FALSE){
     DT <- as.data.frame(dataset)
     missing_count <- 0
     for (colName in colnames(DT)){
+      # colName = 'conA'
         obs <- DT[colName][[1]]
         typeis <- class(obs)
         if (typeis %in% c('integer', 'numeric')){
             missDT <- DT[is.na(obs) == TRUE, listout_col]
         }else{
             if (dim(DT[obs == '', ])[1] != 0){
-                missDT <- DT[obs == '', listout_col]
+                missDT <- DT[obs == '' | is.na(obs) == TRUE, listout_col]
             }else{
                 missDT <- DT[is.na(obs) == TRUE, listout_col]
             }
