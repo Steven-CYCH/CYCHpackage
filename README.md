@@ -19,6 +19,7 @@ library(devtools)
 # devtools::install_github('Steven-CYCH/CYCHpackage')
 library(CYCHpackage)
 library(data.table)
+
 # 模擬數據檔
 dataset <- as.data.table(data.frame(
   ID = paste0('S', sprintf("%03d", 1:100)),
@@ -171,6 +172,9 @@ s.dc.missing_detector(DT, listout_col = NULL, NA_obs_out = FALSE)
 Jung JO, Crnovrsanin N, Wirsik NM, Nienhüser H, Peters L, Popp F, Schulze A, Wagner M, Müller-Stich BP, Büchler MW, Schmidt T. Machine learning for optimized individual survival prediction in resectable upper gastrointestinal cancer. J Cancer Res Clin Oncol. 2023 May;149(5):1691-1702. doi: 10.1007/s00432-022-04063-5. Epub 2022 May 26. PMID: 35616729; PMCID: PMC10097798.
 #### Examples ####
 ```R
+# 封包匯入
+# 模擬數據檔
+
 # 預設值結果，僅列出變數的遺漏值比例
 s.dc.missing_detector(DT = dataset)
 # 變數 conA 中含有3%的遺漏值 
@@ -260,6 +264,20 @@ newDT <- s.dc.sample_missing(DT, deleting_ratio_over = 0.1)
 #### References ####
 Jung JO, Crnovrsanin N, Wirsik NM, Nienhüser H, Peters L, Popp F, Schulze A, Wagner M, Müller-Stich BP, Büchler MW, Schmidt T. Machine learning for optimized individual survival prediction in resectable upper gastrointestinal cancer. J Cancer Res Clin Oncol. 2023 May;149(5):1691-1702. doi: 10.1007/s00432-022-04063-5. Epub 2022 May 26. PMID: 35616729; PMCID: PMC10097798.
 #### Examples ####
+```R
+# 封包匯入
+
+# 模擬數據檔
+dataset <- as.data.table(data.frame(
+  ID = paste0('S', sprintf("%03d", 1:100)),
+  conA = sample(c(round(rnorm(95, mean = 5, sd = 1)), c(1000, -100), rep(NA, 3))),
+  conB = sample(c(round(rnorm(94, mean = 5, sd = 1)), c(100, -1000), rep(NA, 4))),
+  conC = sample(c(round(rnorm(93, mean = 5, sd = 1)), c(1000, -1000), rep(NA, 5))),
+  strD = factor(sample(c(sample(c('A', 'B', 'C'), 90, replace = TRUE), rep(NA_character_, 10)))),
+  strE = sample(c(sample(c('AA', 'BB', 'CC'), 80, replace = TRUE), rep(NA_character_, 20))),
+  dateF = sample(c(sample(seq.Date(as.Date("2020-01-01"), as.Date("2023-12-31"), by = "day"), 30, replace = TRUE), rep(NA, 70)))
+))
+```
 
 
 ### **s.dc.missing_imputation** ###
