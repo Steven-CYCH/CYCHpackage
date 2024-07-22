@@ -268,15 +268,50 @@ Jung JO, Crnovrsanin N, Wirsik NM, Nienhüser H, Peters L, Popp F, Schulze A, Wa
 # 封包匯入
 
 # 模擬數據檔
+set.seed(1234)
 dataset <- as.data.table(data.frame(
-  ID = paste0('S', sprintf("%03d", 1:100)),
-  conA = sample(c(round(rnorm(95, mean = 5, sd = 1)), c(1000, -100), rep(NA, 3))),
-  conB = sample(c(round(rnorm(94, mean = 5, sd = 1)), c(100, -1000), rep(NA, 4))),
-  conC = sample(c(round(rnorm(93, mean = 5, sd = 1)), c(1000, -1000), rep(NA, 5))),
-  strD = factor(sample(c(sample(c('A', 'B', 'C'), 90, replace = TRUE), rep(NA_character_, 10)))),
-  strE = sample(c(sample(c('AA', 'BB', 'CC'), 80, replace = TRUE), rep(NA_character_, 20))),
-  dateF = sample(c(sample(seq.Date(as.Date("2020-01-01"), as.Date("2023-12-31"), by = "day"), 30, replace = TRUE), rep(NA, 70)))
+  ID = paste0('S', sprintf("%03d", 1:30)),
+  conA = sample(rnorm(30, mean = 5, sd = 1)),
+  conB = sample(rnorm(30, mean = 5, sd = 1)),
+  conC = sample(rnorm(30, mean = 5, sd = 1)),
+  conD = sample(rnorm(30, mean = 5, sd = 1)),
+  conE = sample(rnorm(30, mean = 5, sd = 1)),
+  conF = sample(rnorm(30, mean = 5, sd = 1)),
+  conG = sample(rnorm(30, mean = 5, sd = 1)),
+  conH = sample(rnorm(30, mean = 5, sd = 1)),
+  conI = sample(rnorm(30, mean = 5, sd = 1)),
+  conK = sample(rnorm(30, mean = 5, sd = 1)),
+  conL = sample(rnorm(30, mean = 5, sd = 1)),
+  conM = sample(rnorm(30, mean = 5, sd = 1)),
+  conN = sample(rnorm(30, mean = 5, sd = 1)),
+  conO = sample(rnorm(30, mean = 5, sd = 1)),
+  conP = sample(rnorm(30, mean = 5, sd = 1))
 ))
+NA_dataset <- copy(dataset)
+for (i in 1:(dim(dataset)[2]-1)){
+  NA_sample <- sample(1:3, 1)
+  id_count <- sample(dataset[['ID']], NA_sample)
+  for (id in id_count){
+    NA_var <- sample(colnames(dataset)[-1], i)
+    NA_dataset[ID == id, (NA_var) := NA]
+  }
+}
+
+# 原始資料的樣本數
+nrow(NA_dataset)
+# 只要有遺漏值即刪除(遺漏值比例 > 0)
+newDT00 <- s.dc.sample_missing(DT = NA_dataset, deleting_ratio = 0)
+# 查看刪除後的樣本數
+nrow(newDT00)
+# 刪除遺漏值比例 > 0.1的所有樣本
+newDT01 <- s.dc.sample_missing(DT = NA_dataset)
+nrow(newDT01)
+# 刪除遺漏值比例 > 0.5的所有樣本
+newDT05 <- s.dc.sample_missing(DT = NA_dataset, deleting_ratio = 0.5)
+nrow(newDT05)
+# 刪除遺漏值比例 > 0.7的所有樣本
+newDT07 <- s.dc.sample_missing(DT = NA_dataset, deleting_ratio = 0.7)
+nrow(newDT07)
 ```
 
 
