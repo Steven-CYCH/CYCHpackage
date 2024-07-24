@@ -47,9 +47,9 @@ s.dc.outlier_detector(dataset, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, 
 |參數名稱|參數敘述|預設值|參數型態|
 |:----------|:----------|:----------:|:----------:|
 |dataset|輸入要檢查離群值或遺漏的資料集名稱||data.table|
-|ID_name|辨識樣本的唯一鍵值|"ID"|character|
+|ID_name|辨識樣本的唯一鍵值|'ID'|character|
 |sig_num|辨識離群值時，預期的標準差倍數，範圍[mean - sig_num * sd, mean + sig_num * sd]以外的觀察值會被列入候選離群值被印出|3|numeric|
-|NA_obs_out|是否印出具有遺漏值的觀察值|FALSE|boolean|
+|NA_obs_out|是否印出具有遺漏值的觀察值|FALSE|logical|
 |in_list|**要**被納入檢查離群值的變數名稱|NULL|vector|
 |out_list|**不要**被納入檢查離群值的變數名稱|NULL|vector|
 
@@ -167,7 +167,7 @@ s.dc.missing_detector(DT, listout_col = NULL, NA_obs_out = FALSE)
 |:----------|:----------|:----------:|:----------:|
 |DT|輸入要檢查遺漏值的資料集名稱||data.table|
 |listout_col|**要**被納入檢查遺漏值的變數名稱，若無輸入表示全部列出|NULL|vector|
-|NA_obs_out|是否印出具有遺漏值的觀察值|FALSE|boolean|
+|NA_obs_out|是否印出具有遺漏值的觀察值|FALSE|logical|
 #### References ####
 Jung JO, Crnovrsanin N, Wirsik NM, Nienhüser H, Peters L, Popp F, Schulze A, Wagner M, Müller-Stich BP, Büchler MW, Schmidt T. Machine learning for optimized individual survival prediction in resectable upper gastrointestinal cancer. J Cancer Res Clin Oncol. 2023 May;149(5):1691-1702. doi: 10.1007/s00432-022-04063-5. Epub 2022 May 26. PMID: 35616729; PMCID: PMC10097798.
 #### Examples ####
@@ -269,7 +269,7 @@ Jung JO, Crnovrsanin N, Wirsik NM, Nienhüser H, Peters L, Popp F, Schulze A, Wa
 
 # 模擬數據檔
 set.seed(1234)
-dataset <- as.data.table(data.frame(
+dataset2 <- as.data.table(data.frame(
   ID = paste0('S', sprintf("%03d", 1:30)),
   conA = sample(rnorm(30, mean = 5, sd = 1)),
   conB = sample(rnorm(30, mean = 5, sd = 1)),
@@ -283,16 +283,16 @@ dataset <- as.data.table(data.frame(
   conK = sample(rnorm(30, mean = 5, sd = 1)),
   conL = sample(rnorm(30, mean = 5, sd = 1)),
   conM = sample(rnorm(30, mean = 5, sd = 1)),
-  conN = sample(rnorm(30, mean = 5, sd = 1)),
-  conO = sample(rnorm(30, mean = 5, sd = 1)),
-  conP = sample(rnorm(30, mean = 5, sd = 1))
+  catN = sample(sample(c(1:5), 30, replace = TRUE)),
+  catO = sample(sample(c(1:4), 30, replace = TRUE)),
+  catP = sample(sample(c(1:3), 30, replace = TRUE))
 ))
-NA_dataset <- copy(dataset)
-for (i in 1:(dim(dataset)[2]-1)){
+NA_dataset <- copy(dataset2)
+for (i in 1:(dim(dataset2)[2]-1)){
   NA_sample <- sample(1:3, 1)
-  id_count <- sample(dataset[['ID']], NA_sample)
+  id_count <- sample(dataset2[['ID']], NA_sample)
   for (id in id_count){
-    NA_var <- sample(colnames(dataset)[-1], i)
+    NA_var <- sample(colnames(dataset2)[-1], i)
     NA_dataset[ID == id, (NA_var) := NA]
   }
 }
@@ -317,7 +317,43 @@ nrow(newDT07)
 
 ### **s.dc.missing_imputation** ###
 #### Description ####
+針對選擇的欄位，有missing(NA)的觀察值做填補
 #### Usage ####
+newDT <- s.dc.missing_imputation <- function(DT, impute_list = NULL, exclude_list = NULL, impute_method = 'mean', decimal = 2)
 #### Arguments ####
-#### References ####
+|參數名稱|參數敘述|預設值|參數型態|
+|:----------|:----------|:----------:|:----------:|
+|DT|要做填補的資料集||data.table|
+|impute_list|**需要**做填補的欄位，若為NULL，表示所有欄位皆做填補|NULL|str vector|
+|exclude_list|**不需要**做填補的欄位，將exclude_list內的欄位移出需填補的欄位後，針對需填補的欄位做填補|NULL|str vector|
+|impute_method|選擇要做填補的方法，'mean'、'medium'、'mode'可供選擇|'mean'|str|
+|decimal|填補方法選擇**mean**時，平均後的數值小數位數|2|number|
 #### Examples ####
+```R
+# 封包匯入
+
+# 模擬數據檔
+# 封包匯入
+
+# 模擬數據檔
+set.seed(1234)
+dataset3 <- as.data.table(data.frame(
+  ID = paste0('S', sprintf("%03d", 1:30)),
+  conA = sample(rnorm(30, mean = 5, sd = 1)),
+  conB = sample(rnorm(30, mean = 5, sd = 1)),
+  conC = sample(rnorm(30, mean = 5, sd = 1)),
+  conD = sample(rnorm(30, mean = 5, sd = 1)),
+  catN = sample(sample(c(1:5), 30, replace = TRUE)),
+  catO = sample(sample(c(1:4), 30, replace = TRUE)),
+  catP = sample(sample(c(1:3), 30, replace = TRUE))
+))
+NA_dataset <- copy(dataset3)
+for (i in 1:(dim(dataset3)[2]-1)){
+  NA_sample <- sample(1:3, 1)
+  id_count <- sample(dataset2[['ID']], NA_sample)
+  for (id in id_count){
+    NA_var <- sample(colnames(dataset2)[-1], i)
+    NA_dataset[ID == id, (NA_var) := NA]
+  }
+}
+```

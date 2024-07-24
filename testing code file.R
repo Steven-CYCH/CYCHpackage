@@ -35,7 +35,7 @@ s.dc.missing_detector(DT = dataset, NA_obs_out = TRUE)
 
 
 set.seed(1234)
-dataset <- as.data.table(data.frame(
+dataset2 <- as.data.table(data.frame(
   ID = paste0('S', sprintf("%03d", 1:30)),
   conA = sample(rnorm(30, mean = 5, sd = 1)),
   conB = sample(rnorm(30, mean = 5, sd = 1)),
@@ -72,3 +72,7 @@ newDT05 <- s.dc.sample_missing(DT = NA_dataset, deleting_ratio = 0.5)
 nrow(newDT05)
 newDT07 <- s.dc.sample_missing(DT = NA_dataset, deleting_ratio = 0.7)
 nrow(newDT07)
+
+
+
+newDT <- s.dc.missing_imputation(DT = dataset)
