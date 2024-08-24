@@ -14,7 +14,9 @@
 1. [模擬數據檔與封包匯入](#模擬數據檔與封包匯入)  
 2. [Data Clean](#dataclean)  
   2.1 [s.dc.outlier_detector](#sdcoutlierdetector)  
-  2.2 [s.dc.missing_detector](#sdcmissingdetector)
+  2.2 [s.dc.missing_detector](#sdcmissingdetector)  
+  2.3 [s.dc.sample_missing](#sdcsamplemissing)  
+  2.4 [s.dc.missing_imputation](#sdcmissingimputation)
 
 ## 模擬數據檔與封包匯入 ##
 ```R
@@ -259,6 +261,7 @@ s.dc.missing_detector(DT = dataset, NA_obs_out = TRUE)
 # 99  S099    5     6     5    B   BB  <NA>
 # 100 S100    5     4     5    C <NA>  <NA>
 ```
+<a id = 'sdcsamplemissing'> </a>
 
 ### **s.dc.sample_missing** ###
 #### Description ####
@@ -324,7 +327,7 @@ nrow(newDT05)
 newDT07 <- s.dc.sample_missing(DT = NA_dataset, deleting_ratio = 0.7)
 nrow(newDT07)
 ```
-
+<a id = 'sdcmissingimputation'> </a>
 
 ### **s.dc.missing_imputation** ###
 #### Description ####
