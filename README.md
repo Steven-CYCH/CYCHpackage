@@ -11,10 +11,10 @@
 |data.table|>= 1.15.4|DataExplorer|>= 0.8.3|
 |bazar|>= 1.0.11|fastDummies|>= 1.7.3|
 
-1. [模擬數據檔與封包匯入](<模擬數據檔與封包匯入>)  
-2. [Data Clean](<Data Clean>)  
-  2.1 [s.dc.outlier_detector](<s.dc.outlier_detector>)  
-  2.2 [s.dc.missing_detector](<s.dc.missing_detector>)
+1. [模擬數據檔與封包匯入](#模擬數據檔與封包匯入)  
+2. [Data Clean](#dataclean)  
+  2.1 [s.dc.outlier_detector](#sdcoutlierdetector)  
+  2.2 [s.dc.missing_detector](#sdcmissingdetector)
 
 ## 模擬數據檔與封包匯入 ##
 ```R
@@ -37,7 +37,11 @@ dataset <- as.data.table(data.frame(
 ))
 ```
 
-## Data Clean ##
+<a id = 'dataclean'> </a>
+
+## **Data Clean** ##
+
+<a id = 'sdcoutlierdetector'> </a>
 
 ### **s.dc.outlier_detector** ###
 
@@ -158,6 +162,8 @@ s.dc.outlier_detector(DT = dataset, sig_num = 4, NA_obs_out = TRUE)
 # ID是 S099 的紀錄中有變數 dateF 的觀察值為 Missing Data 
 # ID是 S100 的紀錄中有變數 dateF 的觀察值為 Missing Data 
 ```
+
+<a id = 'sdcmissingdetector'> </a>
 
 ### **s.dc.missing_detector** ###
 #### Description ####
