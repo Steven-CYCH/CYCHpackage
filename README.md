@@ -11,6 +11,11 @@
 |data.table|>= 1.15.4|DataExplorer|>= 0.8.3|
 |bazar|>= 1.0.11|fastDummies|>= 1.7.3|
 
+1. [模擬數據檔與封包匯入](#模擬數據檔與封包匯入)  
+2. [Data Clean](#DataClean)  
+  2.1 [s.dc.outlier_detector](#s.dc.outlier_detector)  
+  2.2 [s.dc.missing_detector](#s.dc.missing_detector)
+
 ## 模擬數據檔與封包匯入 ##
 ```R
 # 封包匯入
