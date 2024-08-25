@@ -69,12 +69,12 @@ s.dc.outlier_detector(dataset, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, 
 <!-- #### References #### -->
 #### Examples ####
 ```R
-# 封包匯入
-# 模擬數據檔
+# Package import
+# Dataset Simulation
 
-# 預設值結果
-# 3倍標準差以外的觀察值為離群值(sig_num = 3)
-# 遺漏值樣本ID不列出(NA_obs_out = FALSE)
+# The result by default parameter
+# Observations outside 3 times the standard deviation are outliers (sig_num = 3)
+# Do not list sample IDs with missing values ​​(NA_obs_out = FALSE)
 s.dc.outlier_detector(DT = dataset)
 # conA 
 # 變數 conA 含有NA值，但已省略輸出
@@ -101,8 +101,8 @@ s.dc.outlier_detector(DT = dataset)
 # 變數 dateF 含有NA值，但已省略輸出
 
 
-# 4倍標準差以外的觀察值為離群值(sig_num = 4)
-# 遺漏值樣本ID不列出(NA_obs_out = TRUE)
+# Observations outside 4 times the standard deviation are defined as outliers (sig_num = 4)
+# List missing value sample IDs(NA_obs_out = TRUE)
 s.dc.outlier_detector(DT = dataset, sig_num = 4, NA_obs_out = TRUE)
 # conA 
 # ID是 S047 的紀錄中有變數 conA 的觀察值為 Missing Data 
@@ -171,18 +171,18 @@ s.dc.outlier_detector(DT = dataset, sig_num = 4, NA_obs_out = TRUE)
 
 ### **s.dc.missing_detector** ###
 #### Description ####
-1. 計算各**變數**遺漏值比例
-2. 印出有**遺漏值**的樣本觀察值(包含其識別ID)
+1. Calculate the proportion of missing values ​​for each **variable**
+2. Print sample observations with **missing values** (including their identifying IDs)
 
 #### Usage ####
 s.dc.missing_detector(DT, listout_col = NULL, NA_obs_out = FALSE) 
 
 #### Arguments ####
-|參數名稱|參數敘述|預設值|參數型態|
+|Parameter name|Parameter description|default|parameter type|
 |:----------|:----------|:----------:|:----------:|
-|DT|輸入要檢查遺漏值的資料集名稱||data.table|
-|listout_col|**要**被納入檢查遺漏值的變數名稱，若無輸入表示全部列出|NULL|vector|
-|NA_obs_out|是否印出具有遺漏值的觀察值|FALSE|logical|
+|DT|Enter the dataset name to check for missing values||data.table|
+|listout_col|**Required** Variable names that are included in the check for missing values. If not entered, all will be listed|NULL|vector|
+|NA_obs_out|Whether to print out observations with missing values|FALSE|logical|
 #### References ####
 Jung JO, Crnovrsanin N, Wirsik NM, Nienhüser H, Peters L, Popp F, Schulze A, Wagner M, Müller-Stich BP, Büchler MW, Schmidt T. Machine learning for optimized individual survival prediction in resectable upper gastrointestinal cancer. J Cancer Res Clin Oncol. 2023 May;149(5):1691-1702. doi: 10.1007/s00432-022-04063-5. Epub 2022 May 26. PMID: 35616729; PMCID: PMC10097798.
 #### Examples ####
