@@ -1,4 +1,4 @@
-par.pvalue <- function(x, ...) {
+par.2gp.pvalue <- function(x, ...) {
   # Construct vectors of data y, and groups (strata) g
   y <- unlist(x)
   g <- factor(rep(1:length(x), times = sapply(x, length)))
@@ -14,7 +14,7 @@ par.pvalue <- function(x, ...) {
   c("", sub("<", "&lt;", format.pval(p, digits=3, eps = 0.001)))
 }
 
-nonpar.pvalue <- function(x, ...) {
+nonpar.2gp.pvalue <- function(x, ...) {
   # Construct vectors of data y, and groups (strata) g
   y <- unlist(x)
   g <- factor(rep(1:length(x), times = sapply(x, length)))
