@@ -1,15 +1,16 @@
 # CYCHpackage 說明書 #
 **Package：** CYCHpackage  
 **Title：** Some Statistical method for medical research  
-**Version：** 0.5.0  
+**Version：** 2.1.1  
 **Author：** Sheng-You Su Assistant Research Fellow  
 **Email：** cych15334@gmail.com  
-**Dependence R Version：**>= 4.3.2  
+**Dependence R Version：**>= 4.4.1  
 **Dependence Packages：**
 |package名稱|package版本|package名稱|package版本|
 |:----------|:----------|:----------|:----------|
 |data.table|>= 1.15.4|DataExplorer|>= 0.8.3|
 |bazar|>= 1.0.11|fastDummies|>= 1.7.3|
+|nortest|>=1.0-4|||
 
 1. [模擬數據檔與封包匯入](#模擬數據檔與封包匯入)  
 2. [Data Clean](#dataclean)  
