@@ -32,7 +32,7 @@
 #             │               └── 否 → 卡方檢定 (不校正)
 #             └── 否 → Fisher's Exact Test
 
-library(nortest)
+# library(nortest)
 
 # # Simulate continuous data
 # x <- list(

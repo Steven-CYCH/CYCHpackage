@@ -25,7 +25,8 @@ License: What license is it under?
 Depends:R (>= 4.3.2),
         DataExplorer (>= 0.8.3),
         bazar (>= 1.0.11),
-        fastDummies (>= 1.7.3)
+        fastDummies (>= 1.7.3),
+        nortest (>= 1.0-4)
 Encoding: UTF-8
 LazyData: true
 URL:https://github.com/Steven-CYCH/CYCHpackage.git
