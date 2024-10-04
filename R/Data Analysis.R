@@ -158,7 +158,7 @@ table1_method <- function(x, ...) {
     rows.count <- dim(table(y, g))[1]
     cols.count <- dim(table(y, g))[2]
     size <- (rows.count - 1) * (cols.count - 1)
-    if(sum(table(g)) > 40 == TRUE){
+    if(sum(table(g)) > 40){
       if(ratio >= 0.2){
         m <- "Fisher's Exact test"
       }else{
