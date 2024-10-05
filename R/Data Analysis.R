@@ -39,10 +39,10 @@
 #   group2 = rnorm(40, mean = 55, sd = 10)   # 第二組資料（40個樣本）
 # )
 # # Simulate discrete data
-# x <- list(
-#   group1 = c("A", "A", "B", "B", "A", "A", "B"),  # 第一組資料（類別型）
-#   group2 = c("B", "B", "A", "A", "B", "B", "A")   # 第二組資料（類別型）
-# )
+x <- list(
+  group1 = c("A", "A", "B", "B", "A", "A", "B"),  # 第一組資料（類別型）
+  group2 = c("B", "B", "A", "A", "B", "B", "A")   # 第二組資料（類別型）
+)
 
 table1_pvalue <- function(x, ...) {
   y <- unlist(x)
@@ -86,16 +86,13 @@ table1_pvalue <- function(x, ...) {
     less5count <- sum(table(y, g) < 5)
     allCount <- sum(table(y, g) >= 0)
     ratio <- less5count / allCount
-    exp.TB <- chisq.test(table(y, g))$expected
-    rows.count <- dim(table(y, g))[1]
-    cols.count <- dim(table(y, g))[2]
-    size <- (rows.count - 1) * (cols.count - 1)
+    exp.TB <- chisq.test(table(y, g))
     if(sum(table(g)) > 40){
       if(ratio >= 0.2){
         p <- fisher.test(table(y, g))$p.value
       }else{
-        if(size == 1){
-          if(all(exp.TB >= 10)){
+        if(exp.TB$parameter[['df']] == 1){
+          if(all(exp.TB$expected >= 10)){
             p <- chisq.test(table(y, g), correct = FALSE)$p.value
           }else{
             p <- chisq.test(table(y, g), correct = TRUE)$p.value
@@ -153,16 +150,13 @@ table1_method <- function(x, ...) {
     less5count <- sum(table(y, g) < 5)
     allCount <- sum(table(y, g) >= 0)
     ratio <- less5count / allCount
-    exp.TB <- chisq.test(table(y, g))$expected
-    rows.count <- dim(table(y, g))[1]
-    cols.count <- dim(table(y, g))[2]
-    size <- (rows.count - 1) * (cols.count - 1)
+    exp.TB <- chisq.test(table(y, g))
     if(sum(table(g)) > 40){
       if(ratio >= 0.2){
         m <- "Fisher's Exact test"
       }else{
-        if(size == 1){
-          if(all(exp.TB >= 10)){
+        if(exp.TB$parameter[['df']] == 1){
+          if(all(exp.TB$expected >= 10)){
             m <- "Chi-square test"
           }else{
             m <- "Chi-square test with Yates' continuity correction"
