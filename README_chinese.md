@@ -8,9 +8,9 @@
 **Dependence Packages：**
 |package名稱|package版本|package名稱|package版本|
 |:----------|:----------|:----------|:----------|
-|data.table|>= 1.15.4|DataExplorer|>= 0.8.3|
-|bazar|>= 1.0.11|fastDummies|>= 1.7.3|
-|nortest|>=1.0-4|||
+|`data.table`|>= 1.15.4|`DataExplorer`|>= 0.8.3|
+|`bazar`|>= 1.0.11|`fastDummies`|>= 1.7.3|
+|`nortest`|>= 1.0-4|||
 
 1. [模擬數據檔與封包匯入](#模擬數據檔與封包匯入)  
 2. [Data Clean](#dataclean)  
@@ -49,14 +49,14 @@ dataset <- as.data.table(data.frame(
 
 <a id = 'sdcoutlierdetector'> </a>
 
-### **s.dc.outlier_detector** ###
+### `s.dc.outlier_detector` ###
 
 #### Description ####
 1. 針對**變數**(直欄)列出是否有離群值
 2. 針對**變數**列出是否有遺漏值
 
 #### Usage ####
-s.dc.outlier_detector(dataset, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, in_list = NULL, out_list = NULL)  
+`s.dc.outlier_detector(dataset, ID_name = 'ID', sig_num = 3, NA_obs_out = FALSE, in_list = NULL, out_list = NULL)`  
 
 #### Arguments ####
 |參數名稱|參數敘述|預設值|參數型態|
@@ -171,13 +171,13 @@ s.dc.outlier_detector(DT = dataset, sig_num = 4, NA_obs_out = TRUE)
 
 <a id = 'sdcmissingdetector'> </a>
 
-### **s.dc.missing_detector** ###
+### `s.dc.missing_detector` ###
 #### Description ####
 1. 計算各**變數**遺漏值比例
 2. 印出有**遺漏值**的樣本觀察值(包含其識別ID)
 
 #### Usage ####
-s.dc.missing_detector(DT, listout_col = NULL, NA_obs_out = FALSE) 
+`s.dc.missing_detector(DT, listout_col = NULL, NA_obs_out = FALSE) `
 
 #### Arguments ####
 |參數名稱|參數敘述|預設值|參數型態|
@@ -267,18 +267,18 @@ s.dc.missing_detector(DT = dataset, NA_obs_out = TRUE)
 ```
 <a id = 'sdcsamplemissing'> </a>
 
-### **s.dc.sample_missing** ###
+### `s.dc.sample_missing` ###
 #### Description ####
 遺漏值的刪除處理，若該樣本的遺漏值比例(deleting_ratio_over)超過設定的數字，即將該樣本刪除，並需重新assign物件名稱
 #### Usage ####
-newDT <- s.dc.sample_missing(DT, deleting_ratio_over = 0.1)
+`newDT <- s.dc.sample_missing(DT, deleting_ratio_over = 0.1)`
 #### Arguments ####
 |參數名稱|參數敘述|預設值|參數型態|
 |:----------|:----------|:----------:|:----------:|
 |DT|輸入要檢查遺漏值的資料集名稱||data.table|
 |deleting_ratio_over|當樣本的遺漏值比例超過(大於不包含)設定的值時，將該樣本(row)刪除|0.1|float|
 #### Value ####
-輸出的newDT為**data.table**的格式。
+輸出的newDT為`data.table`的格式。
 #### References ####
 Jung JO, Crnovrsanin N, Wirsik NM, Nienhüser H, Peters L, Popp F, Schulze A, Wagner M, Müller-Stich BP, Büchler MW, Schmidt T. Machine learning for optimized individual survival prediction in resectable upper gastrointestinal cancer. J Cancer Res Clin Oncol. 2023 May;149(5):1691-1702. doi: 10.1007/s00432-022-04063-5. Epub 2022 May 26. PMID: 35616729; PMCID: PMC10097798.
 #### Examples ####
@@ -333,11 +333,11 @@ nrow(newDT07)
 ```
 <a id = 'sdcmissingimputation'> </a>
 
-### **s.dc.missing_imputation** ###
+### `s.dc.missing_imputation` ###
 #### Description ####
 針對選擇的欄位，有missing(NA)的觀察值做填補
 #### Usage ####
-newDT <- s.dc.missing_imputation <- function(DT, impute_list = NULL, exclude_list = NULL, impute_method = 'mean', decimal = 2)
+`newDT <- s.dc.missing_imputation <- function(DT, impute_list = NULL, exclude_list = NULL, impute_method = 'mean', decimal = 2)`
 #### Arguments ####
 |參數名稱|參數敘述|預設值|參數型態|
 |:----------|:----------|:----------:|:----------:|
@@ -378,9 +378,42 @@ for (i in 1:(dim(dataset3)[2]-1)){
 
 <a id = 'dataanalysis'> </a>
 ## **Data Analysis** ##
+
 ![假設檢定流程](https://github.com/Steven-CYCH/CYCHpackage/blob/50c7f560df810a3eec66db658d82316de0695b0f/Table1.png)  
 
 <a id = 'table1pvalue'> </a>
-### **table1_pvalue** ###
+
+### `table1_pvalue` ###
+
 <a id = 'table1method'> </a>
-### **table1_method** ###
+
+### `table1_method` ###
+
+#### Description ####
+搭配`table1{table1}`函數使用，透過上述假設檢定流程進行假設檢定，並返回其檢定p值結果(`table1_pvalue`)與檢定方法(`table1_method`)
+
+#### Usage ####
+``table1( ~ formula | strata, data, overall = FALSE, extra.col = list(`p-value` = table1_pvalue, `method` = table1_method))``
+
+#### Examples ####
+```R
+# install.packages(c('devtools', 'data.table', 'table1'))
+library(data.table)
+library(table1)
+library(devtools)
+# devtools::install_github('Steven-CYCH/CYCHpackage')
+library(CYCHpackage)
+DT <- data.frame(group = c(rep('GP-A',50), rep('GP-B', 50)),
+                 ttest_var1 = c(rnorm(50, 5, 10), rnorm(50, 5, 10)),
+                 ttest_var2 = c(rnorm(50, 5, 10), rnorm(50, 15, 10)),
+                 welch_var1 = c(rnorm(50, 5, 10), rnorm(50, 5, 20)),
+                 welch_var2 = c(rnorm(50, 5, 10), rnorm(50, 105, 20)),
+                 wilcox_var = c(runif(50, min = 0, max = 100), runif(50, min = 0, max = 100)),
+                 fisher_var = c(rep('OBS-A', 4), rep('OBS-B', 50), rep('OBS-A', 46)),
+                 Yates_var = c(rep('OBS-A', 14), rep('OBS-B', 50), rep('OBS-A', 36)),
+                 chi_var = c(rep('OBS-A', 30), rep('OBS-B', 50), rep('OBS-A', 20)))
+
+
+table1( ~ . | group, data = DT, overall = FALSE, extra.col = list(`pvalue` = table1_pvalue, `method` = table1_method))
+```
+
