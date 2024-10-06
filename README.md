@@ -417,3 +417,4 @@ DT <- data.frame(group = c(rep('GP-A',50), rep('GP-B', 50)),
 table1( ~ . | group, data = DT, overall = FALSE, extra.col = list(`pvalue` = table1_pvalue, `method` = table1_method))
 ```
 
+![Table1範例](https://github.com/Steven-CYCH/CYCHpackage/blob/7a060c76b2b61914c3081c3666fc77a31dd6f598/Rplot.png)  
