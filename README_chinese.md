@@ -378,8 +378,7 @@ for (i in 1:(dim(dataset3)[2]-1)){
 
 <a id = 'dataanalysis'> </a>
 ## **Data Analysis** ##
-
-<img src="C:/Users/kkk/Desktop/CYCHpackage/Table1.png" alt="假設檢定流程">  
+![假設檢定流程](https://github.com/Steven-CYCH/CYCHpackage/blob/50c7f560df810a3eec66db658d82316de0695b0f/Table1.png)  
 
 <a id = 'table1pvalue'> </a>
 ### **table1_pvalue** ###
