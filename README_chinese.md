@@ -4,7 +4,7 @@
 **Version：** 2.1.1  
 **Author：** Sheng-You Su Assistant Research Fellow  
 **Email：** cych15334@gmail.com  
-**Dependence R Version：**>= 4.4.1  
+**Dependence R Version：**>= 4.3.2  
 **Dependence Packages：**
 |package名稱|package版本|package名稱|package版本|
 |:----------|:----------|:----------|:----------|
@@ -18,6 +18,9 @@
   2.2 [s.dc.missing_detector](#sdcmissingdetector)  
   2.3 [s.dc.sample_missing](#sdcsamplemissing)  
   2.4 [s.dc.missing_imputation](#sdcmissingimputation)
+4. [Data Analysis](#dataanalysis)  
+  4.1 [table1_pvalue](#table1pvalue)  
+  4.2 [table1_method](#table1method)
 
 ## 模擬數據檔與封包匯入 ##
 ```R
@@ -372,3 +375,13 @@ for (i in 1:(dim(dataset3)[2]-1)){
   }
 }
 ```
+
+<a id = 'dataanalysis'> </a>
+## **Data Analysis** ##
+
+<img src="C:/Users/kkk/Desktop/CYCHpackage/Table1.png" alt="假設檢定流程">  
+
+<a id = 'table1pvalue'> </a>
+### **table1_pvalue** ###
+<a id = 'table1method'> </a>
+### **table1_method** ###
