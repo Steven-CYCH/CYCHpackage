@@ -89,7 +89,15 @@ table1_pvalue <- function(x, ...) {
     exp.TB <- chisq.test(table(y, g))
     if(sum(table(g)) > 40){
       if(ratio >= 0.2){
-        p <- fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
+        result <- try({
+          fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
+          }, silent = TRUE)
+        if (inherits(result, "try-error")) {
+          message("過多0於觀察個數中")
+          p <- '無法計算'
+        } else {
+          p <- result
+        }
       }else{
         if(exp.TB$parameter[['df']] == 1){
           if(all(exp.TB$expected >= 10)){
@@ -102,7 +110,15 @@ table1_pvalue <- function(x, ...) {
         }
       }
     }else{
-      p <- fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
+      result <- try({
+        fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
+      }, silent = TRUE)
+      if (inherits(result, "try-error")) {
+        message("過多0於觀察個數中")
+        p <- '無法計算'
+      } else {
+        p <- result
+      }
     }
   }
   sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
