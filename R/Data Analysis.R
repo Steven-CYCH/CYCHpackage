@@ -125,7 +125,7 @@ table1_pvalue <- function(x, ...) {
     sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
   }, silent = TRUE)
   if (inherits(result, "try-error")) {
-    p <- '無法計算'
+    p <- NA
   } else {
     sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
   }
