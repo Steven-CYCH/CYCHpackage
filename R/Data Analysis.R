@@ -121,7 +121,14 @@ table1_pvalue <- function(x, ...) {
       }
     }
   }
-  sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
+  result <- try({
+    sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
+  }, silent = TRUE)
+  if (inherits(result, "try-error")) {
+    p <- '無法計算'
+  } else {
+    sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
+  }
 }
 
 table1_method <- function(x, ...) {
