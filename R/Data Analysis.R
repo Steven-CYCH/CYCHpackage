@@ -89,7 +89,7 @@ table1_pvalue <- function(x, ...) {
     exp.TB <- chisq.test(table(y, g))
     if(sum(table(g)) > 40){
       if(ratio >= 0.2){
-        p <- fisher.test(table(y, g))$p.value
+        p <- fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
       }else{
         if(exp.TB$parameter[['df']] == 1){
           if(all(exp.TB$expected >= 10)){
@@ -102,7 +102,7 @@ table1_pvalue <- function(x, ...) {
         }
       }
     }else{
-      p <- fisher.test(table(y, g))$p.value
+      p <- fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
     }
   }
   sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
