@@ -34,11 +34,11 @@
 
 
 # # Simulate continuous data
-# x <- list(
-#   group1 = rnorm(35, mean = 50, sd = 10),  # 第一組資料（35個樣本）
-#   group2 = rnorm(40, mean = 55, sd = 10),  # 第二組資料（40個樣本）
-#   group2 = rnorm(50, mean = 45, sd = 15)   # 第二組資料（40個樣本）
-# )
+x <- list(
+  group1 = rnorm(35, mean = 50, sd = 10),  # 第一組資料（35個樣本）
+  group2 = rnorm(40, mean = 55, sd = 10),  # 第二組資料（40個樣本）
+  group3 = rnorm(50, mean = 45, sd = 15)   # 第二組資料（40個樣本）
+)
 # # Simulate discrete data
 # x <- list(
 #   group1 = c("A", "A", "B", "B", "A", "A", "B"),  # 第一組資料（類別型）
@@ -207,35 +207,10 @@ table1_pvalue_simple <- function(x, ...) {
   g <- factor(rep(1:length(x), times = sapply(x, length)))
   if (is.numeric(y)) {
     if (length(levels(g)) == 2){
-      if (all(table(g) > 30) == TRUE){
-        g1 <- y[g == '1']
-        g2 <- y[g == '2']
-        normal.test.g1 <- shapiro.test(g1)$p.value
-        normal.test.g2 <- shapiro.test(g2)$p.value
-        test1.p <- any(c(normal.test.g1, normal.test.g2) < 0.05)
-        normal.test.g1 <- ad.test(g1)$p.value
-        normal.test.g2 <- ad.test(g2)$p.value
-        test2.p <- any(c(normal.test.g1, normal.test.g2) < 0.05)
-        non.normal <- all(test1.p, test2.p)
-        if (non.normal == FALSE){
-          if (var.test(y ~ g)$p.value > 0.05) {
-            p <- t.test(y ~ g, var.equal = TRUE)$p.value
-          } else {
-            p <- t.test(y ~ g, var.equal = FALSE)$p.value
-          }
-        }else{
-          if (var.test(y ~ g)$p.value > 0.05) {
-            p <- t.test(y ~ g, var.equal = TRUE)$p.value
-          } else {
-            p <- t.test(y ~ g, var.equal = FALSE)$p.value
-          }
-        }
-      }else{
-        if (var.test(y ~ g)$p.value > 0.05) {
-          p <- t.test(y ~ g, var.equal = TRUE)$p.value
-        } else {
-          p <- t.test(y ~ g, var.equal = FALSE)$p.value
-        }
+      if (var.test(y ~ g)$p.value > 0.05) {
+        p <- t.test(y ~ g, var.equal = TRUE)$p.value
+      } else {
+        p <- t.test(y ~ g, var.equal = FALSE)$p.value
       }
     }else if (length(levels(g)) > 2){
       varp <- leveneTest(y ~ g)[["Pr(>F)"]][1]
