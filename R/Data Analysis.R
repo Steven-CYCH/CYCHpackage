@@ -213,7 +213,7 @@ table1_pvalue_simple <- function(x, ...) {
         p <- t.test(y ~ g, var.equal = FALSE)$p.value
       }
     }else if (length(levels(g)) > 2){
-      varp <- leveneTest(y ~ g)[["Pr(>F)"]][1]
+      varp <- as.numeric(leveneTest(y ~ g)[["Pr(>F)"]][1])
       if (varp > 0.05) {
         p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
       } else {
