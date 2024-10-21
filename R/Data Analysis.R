@@ -298,8 +298,9 @@ table1_pvalue_simple <- function(x, ...) {
     sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
   }
 }
+# table1_pvalue_simple(x)
 
-table1_method <- function(x, ...) {
+table1_method_simple <- function(x, ...) {
   y <- unlist(x)
   g <- factor(rep(1:length(x), times = sapply(x, length)))
   if (is.numeric(y)) {
@@ -373,3 +374,4 @@ table1_method <- function(x, ...) {
     }
   }
 }
+
