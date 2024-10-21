@@ -247,6 +247,7 @@ table1_pvalue_simple <- function(x, ...) {
         }
       }else{
         test <- leveneTest(y ~ g)
+        print('test', test)
         if (test$`Pr(>F)`[1] > 0.05) {
           p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
         } else {
