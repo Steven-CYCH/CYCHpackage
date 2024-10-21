@@ -34,11 +34,11 @@
 
 
 # # Simulate continuous data
-x <- list(
-  group1 = rnorm(35, mean = 50, sd = 10),  # 第一組資料（35個樣本）
-  group2 = rnorm(40, mean = 55, sd = 10),  # 第二組資料（40個樣本）
-  group2 = rnorm(50, mean = 45, sd = 15)   # 第二組資料（40個樣本）
-)
+# x <- list(
+#   group1 = rnorm(35, mean = 50, sd = 10),  # 第一組資料（35個樣本）
+#   group2 = rnorm(40, mean = 55, sd = 10),  # 第二組資料（40個樣本）
+#   group2 = rnorm(50, mean = 45, sd = 15)   # 第二組資料（40個樣本）
+# )
 # # Simulate discrete data
 # x <- list(
 #   group1 = c("A", "A", "B", "B", "A", "A", "B"),  # 第一組資料（類別型）
@@ -238,20 +238,11 @@ table1_pvalue_simple <- function(x, ...) {
         }
       }
     }else if (length(levels(g)) > 2){
-      if (all(table(g) > 30) == TRUE){
-        varp <- leveneTest(y ~ g)[["Pr(>F)"]][1]
-        if (varp > 0.05) {
-          p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
-        } else {
-          p <- oneway.test(y ~ g, var.equal = FALSE)$p.value
-        }
-      }else{
-        varp <- leveneTest(y ~ g)[["Pr(>F)"]][1]
-        if (varp > 0.05) {
-          p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
-        } else {
-          p <- oneway.test(y ~ g, var.equal = FALSE)$p.value
-        }
+      varp <- leveneTest(y ~ g)[["Pr(>F)"]][1]
+      if (varp > 0.05) {
+        p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
+      } else {
+        p <- oneway.test(y ~ g, var.equal = FALSE)$p.value
       }
     }
   } else {
