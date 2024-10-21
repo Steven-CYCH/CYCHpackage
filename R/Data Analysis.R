@@ -241,7 +241,7 @@ table1_pvalue_simple <- function(x, ...) {
           if(all(exp.TB$expected >= 10)){
             p <- chisq.test(table(y, g), correct = FALSE)$p.value
           }else{
-            p <- chisq.test(table(y, g), correct = TRUE)$p.value
+            p <- chisq.test(table(y, g), correct = FALSE)$p.value
           }
         }else{
           p <- chisq.test(table(y, g), correct = FALSE)$p.value
@@ -298,20 +298,36 @@ table1_method_simple <- function(x, ...) {
     exp.TB <- chisq.test(table(y, g))
     if(sum(table(g)) > 40){
       if(ratio >= 0.2){
-        m <- "Fisher's Exact test"
+        result <- try({
+          fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
+        }, silent = TRUE)
+        if (inherits(result, "try-error")) {
+          message("過多0於觀察個數中")
+          m <- NA
+        } else {
+          m <- "Fisher's Exact test"
+        }
       }else{
         if(exp.TB$parameter[['df']] == 1){
           if(all(exp.TB$expected >= 10)){
             m <- "Chi-square test"
           }else{
-            m <- "Chi-square test with Yates' continuity correction"
+            m <- "Chi-square test"
           }
         }else{
           m <- "Chi-square test"
         }
       }
     }else{
-      m <- "Fisher's Exact test"
+      result <- try({
+        fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
+      }, silent = TRUE)
+      if (inherits(result, "try-error")) {
+        message("過多0於觀察個數中")
+        m <- NA
+      } else {
+        m <- "Fisher's Exact test"
+      }
     }
   }
 }
