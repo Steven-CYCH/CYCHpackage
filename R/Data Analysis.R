@@ -206,16 +206,45 @@ table1_pvalue_simple <- function(x, ...) {
   g <- factor(rep(1:length(x), times = sapply(x, length)))
   if (is.numeric(y)) {
     if (length(levels(g)) == 2){
-      if (var.test(y ~ g)$p.value > 0.05) {
-        p <- t.test(y ~ g, var.equal = TRUE)$p.value
-      } else {
-        p <- t.test(y ~ g, var.equal = FALSE)$p.value
+      if (all(table(g) > 30) == TRUE){
+        g1 <- y[g == '1']
+        g2 <- y[g == '2']
+        normal.test.g1 <- shapiro.test(g1)$p.value
+        normal.test.g2 <- shapiro.test(g2)$p.value
+        test1.p <- any(c(normal.test.g1, normal.test.g2) < 0.05)
+        normal.test.g1 <- ad.test(g1)$p.value
+        normal.test.g2 <- ad.test(g2)$p.value
+        test2.p <- any(c(normal.test.g1, normal.test.g2) < 0.05)
+        non.normal <- all(test1.p, test2.p)
+        if (non.normal == FALSE){
+          if (var.test(y ~ g)$p.value > 0.05) {
+            p <- t.test(y ~ g, var.equal = TRUE)$p.value
+          } else {
+            p <- t.test(y ~ g, var.equal = FALSE)$p.value
+          }
+        }else{
+          if (var.test(y ~ g)$p.value > 0.05) {
+            p <- t.test(y ~ g, var.equal = TRUE)$p.value
+          } else {
+            p <- t.test(y ~ g, var.equal = FALSE)$p.value
+          }
+        }
+      }else{
+        if (var.test(y ~ g)$p.value > 0.05) {
+          p <- t.test(y ~ g, var.equal = TRUE)$p.value
+        } else {
+          p <- t.test(y ~ g, var.equal = FALSE)$p.value
+        }
       }
     }else if (length(levels(g)) > 2){
-      if (var.test(y ~ g)$p.value > 0.05) {
-        p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
-      } else {
-        p <- oneway.test(y ~ g, var.equal = FALSE)$p.value
+      if (all(table(g) > 30) == TRUE){
+        if (var.test(y ~ g)$p.value > 0.05) {
+          p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
+        } else {
+          p <- oneway.test(y ~ g, var.equal = FALSE)$p.value
+        }
+      }else{
+        p <- kruskal.test(y ~ g)$p.value
       }
     }
   } else {
@@ -264,48 +293,5 @@ table1_pvalue_simple <- function(x, ...) {
     p <- NA
   } else {
     sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
-  }
-}
-
-
-table1_method_simple <- function(x, ...) {
-  y <- unlist(x)
-  g <- factor(rep(1:length(x), times = sapply(x, length)))
-  if (is.numeric(y)) {
-    if (length(levels(g)) == 2){
-      if (var.test(y ~ g)$p.value > 0.05) {
-        m <- 'Independent t-test'
-      } else {
-        m <- "Welch's t-test"
-      }
-    }else if (length(levels(g)) > 2){
-      if (var.test(y ~ g)$p.value > 0.05) {
-        m <- "ANOVA"
-      } else {
-        m <- "Welch's ANOVA"
-      }
-    }
-  } else {
-    less5count <- sum(table(y, g) < 5)
-    allCount <- sum(table(y, g) >= 0)
-    ratio <- less5count / allCount
-    exp.TB <- chisq.test(table(y, g))
-    if(sum(table(g)) > 40){
-      if(ratio >= 0.2){
-        m <- "Fisher's Exact test"
-      }else{
-        if(exp.TB$parameter[['df']] == 1){
-          if(all(exp.TB$expected >= 10)){
-            m <- "Chi-square test"
-          }else{
-            m <- "Chi-square test with Yates' continuity correction"
-          }
-        }else{
-          m <- "Chi-square test"
-        }
-      }
-    }else{
-      m <- "Fisher's Exact test"
-    }
   }
 }
