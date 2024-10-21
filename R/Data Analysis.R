@@ -207,17 +207,51 @@ table1_pvalue_simple <- function(x, ...) {
   g <- factor(rep(1:length(x), times = sapply(x, length)))
   if (is.numeric(y)) {
     if (length(levels(g)) == 2){
-      if (var.test(y ~ g)$p.value > 0.05) {
-        p <- t.test(y ~ g, var.equal = TRUE)$p.value
-      } else {
-        p <- t.test(y ~ g, var.equal = FALSE)$p.value
+      if (all(table(g) > 30) == TRUE){
+        g1 <- y[g == '1']
+        g2 <- y[g == '2']
+        normal.test.g1 <- shapiro.test(g1)$p.value
+        normal.test.g2 <- shapiro.test(g2)$p.value
+        test1.p <- any(c(normal.test.g1, normal.test.g2) < 0.05)
+        normal.test.g1 <- ad.test(g1)$p.value
+        normal.test.g2 <- ad.test(g2)$p.value
+        test2.p <- any(c(normal.test.g1, normal.test.g2) < 0.05)
+        non.normal <- all(test1.p, test2.p)
+        if (non.normal == FALSE){
+          if (var.test(y ~ g)$p.value > 0.05) {
+            p <- t.test(y ~ g, var.equal = TRUE)$p.value
+          } else {
+            p <- t.test(y ~ g, var.equal = FALSE)$p.value
+          }
+        }else{
+          if (var.test(y ~ g)$p.value > 0.05) {
+            p <- t.test(y ~ g, var.equal = TRUE)$p.value
+          } else {
+            p <- t.test(y ~ g, var.equal = FALSE)$p.value
+          }
+        }
+      }else{
+        if (var.test(y ~ g)$p.value > 0.05) {
+          p <- t.test(y ~ g, var.equal = TRUE)$p.value
+        } else {
+          p <- t.test(y ~ g, var.equal = FALSE)$p.value
+        }
       }
     }else if (length(levels(g)) > 2){
-      varp <- as.numeric(leveneTest(y ~ g)[["Pr(>F)"]][1])
-      if (varp > 0.05) {
-        p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
-      } else {
-        p <- oneway.test(y ~ g, var.equal = FALSE)$p.value
+      if (all(table(g) > 30) == TRUE){
+        test <- leveneTest(y ~ g)
+        if (test$`Pr(>F)`[1] > 0.05) {
+          p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
+        } else {
+          p <- oneway.test(y ~ g, var.equal = FALSE)$p.value
+        }
+      }else{
+        test <- leveneTest(y ~ g)
+        if (test$`Pr(>F)`[1] > 0.05) {
+          p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
+        } else {
+          p <- oneway.test(y ~ g, var.equal = FALSE)$p.value
+        }
       }
     }
   } else {
