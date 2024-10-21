@@ -239,19 +239,22 @@ table1_pvalue_simple <- function(x, ...) {
       }
     }else if (length(levels(g)) > 2){
       if (all(table(g) > 30) == TRUE){
-        test <- leveneTest(y ~ g)
-        if (test$`Pr(>F)`[1] > 0.05) {
+        vartest <- leveneTest(y ~ g)$`Pr(>F)`[1]
+        if (!is.na(vartest) & vartest > 0.05) {
           p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
-        } else {
+        } else if (!is.na(vartest) & vartest <= 0.05) {
           p <- oneway.test(y ~ g, var.equal = FALSE)$p.value
+        }else{
+          p <- NA
         }
       }else{
-        test <- leveneTest(y ~ g)
-        print('test', test)
-        if (test$`Pr(>F)`[1] > 0.05) {
+        vartest <- leveneTest(y ~ g)$`Pr(>F)`[1]
+        if (!is.na(vartest) & vartest > 0.05) {
           p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
-        } else {
+        } else if (!is.na(vartest) & vartest <= 0.05) {
           p <- oneway.test(y ~ g, var.equal = FALSE)$p.value
+        }else{
+          p <- NA
         }
       }
     }
