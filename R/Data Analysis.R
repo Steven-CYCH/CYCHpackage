@@ -34,11 +34,11 @@
 
 
 # # Simulate continuous data
-x <- list(
-  group1 = rnorm(35, mean = 50, sd = 10),  # 第一組資料（35個樣本）
-  group2 = rnorm(40, mean = 55, sd = 10),  # 第二組資料（40個樣本）
-  group3 = rnorm(50, mean = 45, sd = 15)   # 第二組資料（40個樣本）
-)
+# x <- list(
+#   group1 = rnorm(35, mean = 50, sd = 10),  # 第一組資料（35個樣本）
+#   group2 = rnorm(40, mean = 55, sd = 10),  # 第二組資料（40個樣本）
+#   group3 = rnorm(50, mean = 45, sd = 15)   # 第二組資料（40個樣本）
+# )
 # # Simulate discrete data
 # x <- list(
 #   group1 = c("A", "A", "B", "B", "A", "A", "B"),  # 第一組資料（類別型）
