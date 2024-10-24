@@ -205,7 +205,7 @@ table1_method <- function(x, ...) {
 table1_pvalue_simple <- function(x, ...) {
   y <- unlist(x)
   g <- factor(rep(1:length(x), times = sapply(x, length)))
-  print(g)
+  # print(g)
   if (is.numeric(y)) {
     if (length(levels(g)) == 2){
       if (var.test(y ~ g)$p.value > 0.05) {
