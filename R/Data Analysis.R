@@ -91,6 +91,7 @@ table1_pvalue <- function(x, ...) {
     if(sum(table(g)) > 40){
       if(ratio >= 0.2){
         result <- try({
+          set.seed(1234)
           fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
           }, silent = TRUE)
         if (inherits(result, "try-error")) {
@@ -112,6 +113,7 @@ table1_pvalue <- function(x, ...) {
       }
     }else{
       result <- try({
+        set.seed(1234)
         fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
       }, silent = TRUE)
       if (inherits(result, "try-error")) {
@@ -203,6 +205,7 @@ table1_method <- function(x, ...) {
 table1_pvalue_simple <- function(x, ...) {
   y <- unlist(x)
   g <- factor(rep(1:length(x), times = sapply(x, length)))
+  print(g)
   if (is.numeric(y)) {
     if (length(levels(g)) == 2){
       if (var.test(y ~ g)$p.value > 0.05) {
@@ -228,6 +231,7 @@ table1_pvalue_simple <- function(x, ...) {
     if(sum(table(g)) > 40){
       if(ratio >= 0.2){
         result <- try({
+          set.seed(1234)
           fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
         }, silent = TRUE)
         if (inherits(result, "try-error")) {
@@ -249,6 +253,7 @@ table1_pvalue_simple <- function(x, ...) {
       }
     }else{
       result <- try({
+        set.seed(1234)
         fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
       }, silent = TRUE)
       if (inherits(result, "try-error")) {
@@ -299,6 +304,7 @@ table1_method_simple <- function(x, ...) {
     if(sum(table(g)) > 40){
       if(ratio >= 0.2){
         result <- try({
+          set.seed(1234)
           fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
         }, silent = TRUE)
         if (inherits(result, "try-error")) {
@@ -320,6 +326,7 @@ table1_method_simple <- function(x, ...) {
       }
     }else{
       result <- try({
+        set.seed(1234)
         fisher.test(table(y, g), simulate.p.value = TRUE)$p.value
       }, silent = TRUE)
       if (inherits(result, "try-error")) {
