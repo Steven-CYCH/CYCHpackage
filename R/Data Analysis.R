@@ -344,3 +344,25 @@ table1_method_simple <- function(x, ...) {
     }
   }
 }
+
+render.cont <- function(x) {
+  # 計算基本統計量
+  stats <- stats.default(x)
+
+  # 提取 Mean, SD, Median, Q1, Q3
+  mean_val <- as.numeric(stats$MEAN)
+  sd_val <- as.numeric(stats$SD)
+  median_val <- as.numeric(stats$MEDIAN)
+  q1_val <- as.numeric(stats$Q1)
+  q3_val <- as.numeric(stats$Q3)
+
+  # 格式化輸出分兩行
+  c(
+    "",
+    "Mean ± SD" = sprintf("%.2f ± %.2f", mean_val, sd_val),
+    "Median [Q1, Q3]" = sprintf("%.2f [%.2f, %.2f]", median_val, q1_val, q3_val)
+  )
+}
+render.cat <- function(x) {
+  c("", sapply(stats.default(x), function(y) with(y, sprintf("%d (%6.2f %%)", FREQ, PCT))))
+}
