@@ -74,10 +74,13 @@ table1_pvalue <- function(x, ...) {
       }
     }else if (length(levels(g)) > 2){
       if (all(table(g) > 30) == TRUE){
-        if (var.test(y ~ g)$p.value > 0.05) {
+        vartest <- leveneTest(y ~ g)$`Pr(>F)`[1]
+        if (!is.na(vartest) & vartest > 0.05) {
           p <- summary(aov(y ~ g))[[1]][["Pr(>F)"]][1]
-        } else {
+        } else if (!is.na(vartest) & vartest <= 0.05){
           p <- oneway.test(y ~ g, var.equal = FALSE)$p.value
+        } else {
+          p <- NA
         }
       }else{
         p <- kruskal.test(y ~ g)$p.value
@@ -163,10 +166,13 @@ table1_method <- function(x, ...) {
       }
     }else if (length(levels(g)) > 2){
       if (all(table(g) > 30) == TRUE){
-        if (var.test(y ~ g)$p.value > 0.05) {
+        vartest <- leveneTest(y ~ g)$`Pr(>F)`[1]
+        if (!is.na(vartest) & vartest > 0.05) {
           m <- "ANOVA"
-        } else {
+        } else if (!is.na(vartest) & vartest <= 0.05){
           m <- "Welch's ANOVA"
+        } else {
+          m <- NA
         }
       }else{
         m <- 'Kruskal-Wallis test'

@@ -1,7 +1,7 @@
 Package: CYCHpackage
 Type: Package
 Title: Some Statistical method for research
-Version: 2.1.2
+Version: 2.1.3
 Author: Sheng-You Su Assistant Research Fellow
 Maintainer: The package maintainer <cych15334@gmail.com>
 Description: 0.1.0 function addition 's.dc.outlier_detector'
@@ -22,6 +22,7 @@ Description: 0.1.0 function addition 's.dc.outlier_detector'
                    function addition 'table1_pvalue', 'table1_method'
              2.1.1 function modify testing hypothesis
              2.1.2 function modify testing hypothesis to more simple one
+             2.1.3 function 'table1_pvalue' modify levene test
 License: What license is it under?
 Depends:R (>= 4.3.2),
         DataExplorer (>= 0.8.3),
