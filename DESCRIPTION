@@ -1,7 +1,7 @@
 Package: CYCHpackage
 Type: Package
 Title: Some Statistical method for research
-Version: 2.2.0
+Version: 3.0.1
 Author: Sheng-You Su Assistant Research Fellow
 Maintainer: The package maintainer <cych15334@gmail.com>
 Description: 0.1.0 function addition 's.dc.outlier_detector'
@@ -24,12 +24,15 @@ Description: 0.1.0 function addition 's.dc.outlier_detector'
              2.1.2 function modify testing hypothesis to more simple one
              2.1.3 function 'table1_pvalue' modify levene test
              2.2.0 function addition 'render.cont', 'render.cat'
+             3.0.1 file addition 'Model tips'
+                   function addition 'reduce.lm'
 License: What license is it under?
 Depends:R (>= 4.3.2),
         DataExplorer (>= 0.8.3),
         bazar (>= 1.0.11),
         fastDummies (>= 1.7.3),
-        nortest (>= 1.0-4)
+        nortest (>= 1.0-4),
+        data.table (>= 1.16.4)
 Encoding: UTF-8
 LazyData: true
 URL:https://github.com/Steven-CYCH/CYCHpackage.git
