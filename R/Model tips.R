@@ -5,7 +5,7 @@
 #                         var2 = sample(c('Yes', 'No'), 50, replace = TRUE),
 #                         var3 = sample(0:100, 50, replace = TRUE))
 
-reduce.lm <- function(datasets, var.y, threshold = 0.1, del.var.x = c()){
+reduce.lm <- function(datasets, var.y, var.x = c(), threshold = 0.1, del.var.x = c()){
 
   # datasets <- test.data
   # var.y <- 'var3'
@@ -15,7 +15,11 @@ reduce.lm <- function(datasets, var.y, threshold = 0.1, del.var.x = c()){
 
   datasets <- as.data.table(datasets)
 
-  var.x <- colnames(datasets)[!(colnames(datasets) %in% c(var.y, del.var.x))]
+  if (is.null(var.x)){
+    var.x <- colnames(datasets)[!(colnames(datasets) %in% c(var.y, del.var.x))]
+  }else{
+    var.x <- var.x[!(var.x %in% c(var.y, del.var.x))]
+  }
 
   simple.p <- data.table(var = NULL, p = NULL)
 
