@@ -1,7 +1,7 @@
 # CYCHpackage 說明書 #
 **Package：** CYCHpackage  
 **Title：** Some Statistical method for medical research  
-**Version：** 2.1.1  
+**Version：** 3.0.1  
 **Author：** Sheng-You Su Assistant Research Fellow  
 **Email：** cych15334@gmail.com  
 **Dependence R Version：**>= 4.3.2  
@@ -345,7 +345,7 @@ nrow(newDT07)
 |impute_list|**需要**做填補的欄位，若為NULL，表示所有欄位皆做填補|NULL|str vector|
 |exclude_list|**不需要**做填補的欄位，將exclude_list內的欄位移出需填補的欄位後，針對需填補的欄位做填補|NULL|str vector|
 |impute_method|選擇要做填補的方法，'mean'、'medium'、'mode'可供選擇|'mean'|str|
-|decimal|填補方法選擇**mean**時，平均後的數值小數位數|2|number|
+|decimal|填補方法選擇**mean**時，平均後的數值小數位數|2|numeric|
 #### Examples ####
 ```R
 # 封包匯入
@@ -394,6 +394,8 @@ for (i in 1:(dim(dataset3)[2]-1)){
 
 #### Usage ####
 ``table1( ~ formula | strata, data, overall = FALSE, extra.col = list(`p-value` = table1_pvalue, `method` = table1_method))``
+#### Usage Hint ####
+程式執行時，`overall`必須為`FALSE`，否則檢定方法與結果會將`overall`列納入！
 
 #### Examples ####
 ```R
@@ -418,3 +420,47 @@ table1( ~ . | group, data = DT, overall = FALSE, extra.col = list(`pvalue` = tab
 ```
 
 ![Table1範例](https://github.com/Steven-CYCH/CYCHpackage/blob/7a060c76b2b61914c3081c3666fc77a31dd6f598/Rplot.png)  
+
+
+
+<a id = 'modeltips'> </a>
+
+## **Model Tips** ##
+
+<a id = 'reducelm'> </a>
+
+### `s.mt.reduce.lm` ###
+
+#### Description ####
+自動化執行線性回歸的reduce model
+
+#### Usage ####
+``s.mt.reduce.lm(datasets, var.y, var.x = c(), threshold = 0.1, del.var.x = c())``
+
+#### Arguments ####
+|參數名稱|參數敘述|預設值|參數型態|
+|:----------|:----------|:----------:|:----------:|
+|datasets|要進行線性迴歸的資料集||data.table|
+|var.y|**依變數**(dependent variable)的變數名稱||str|
+|var.x|**自變數**(independent variable)的變數名稱||str vector|
+|threshold|在full model中，迴歸係數檢定p值小於此閥值之變數納入reduce model中|0.1|numeric|
+|del.var.x|當納入的自變數數量太多不想寫出來時，可以將不要納入的寫在這邊即可||str vector|
+
+#### Examples ####
+```R
+library(data.table)
+
+set.seed(1234)
+test.data <- data.table(var1 = sample(0:100, 50, replace = TRUE),
+                        var2 = sample(c('Yes', 'No'), 50, replace = TRUE),
+                        var3 = sample(0:100, 50, replace = TRUE))
+
+# 當threshold設定較低，導致無變數納入reduce model
+lm <- s.mt.reduce.lm(datasets = test.data, var.y = 'var3', var.x = c(), threshold = 0.1, del.var.x = c())
+# 錯誤發生在 s.mt.reduce.lm(datasets = test.data, var.y = "var3")：
+#   There is no significance variable in simple linear regression model
+
+# 將所有自變項納入模型的候選
+lm <- s.mt.reduce.lm(datasets = test.data, var.y = 'var3', threshold = 0.3)
+summary(lm) # 列出reduce model的Coefficients
+```

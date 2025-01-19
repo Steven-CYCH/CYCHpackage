@@ -1,11 +1,11 @@
-# library(data.table)
-#
-# set.seed(1234)
-# test.data <- data.table(var1 = sample(0:100, 50, replace = TRUE),
-#                         var2 = sample(c('Yes', 'No'), 50, replace = TRUE),
-#                         var3 = sample(0:100, 50, replace = TRUE))
+library(data.table)
 
-reduce.lm <- function(datasets, var.y, var.x = c(), threshold = 0.1, del.var.x = c()){
+set.seed(1234)
+test.data <- data.table(var1 = sample(0:100, 50, replace = TRUE),
+                        var2 = sample(c('Yes', 'No'), 50, replace = TRUE),
+                        var3 = sample(0:100, 50, replace = TRUE))
+
+s.mt.reduce.lm <- function(datasets, var.y, var.x = c(), threshold = 0.1, del.var.x = c()){
 
   # datasets <- test.data
   # var.y <- 'var3'
@@ -43,7 +43,7 @@ reduce.lm <- function(datasets, var.y, var.x = c(), threshold = 0.1, del.var.x =
   var.x.LR.R <- simple.p[p < threshold, var][!duplicated(simple.p[p < threshold, var])]
 
   if (length(var.x.LR.R) == 0){
-    stop('There is no significance variable in simple linear regression model')
+    stop('There is no significance variable in Full linear regression model')
   }else{
     fr.LR.R <- paste(var.x.LR.R, collapse = ' + ')
     fr.LR.R <- formula(paste0(var.y, ' ~ ', fr.LR.R))
@@ -54,3 +54,6 @@ reduce.lm <- function(datasets, var.y, var.x = c(), threshold = 0.1, del.var.x =
     return(LR.R)
   }
 }
+
+
+lm <- s.mt.reduce.lm(datasets = test.data, var.y = 'var2')
