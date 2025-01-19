@@ -17,10 +17,12 @@
   2.1 [s.dc.outlier_detector](#sdcoutlierdetector)  
   2.2 [s.dc.missing_detector](#sdcmissingdetector)  
   2.3 [s.dc.sample_missing](#sdcsamplemissing)  
-  2.4 [s.dc.missing_imputation](#sdcmissingimputation)
-4. [Data Analysis](#dataanalysis)  
-  4.1 [table1_pvalue](#table1pvalue)  
-  4.2 [table1_method](#table1method)
+  2.4 [s.dc.missing_imputation](#sdcmissingimputation)  
+3. [Data Analysis](#dataanalysis)  
+  3.1 [table1_pvalue](#table1pvalue)  
+  3.2 [table1_method](#table1method)
+4. [Model tips](#modeltips)  
+  4.1 [s.mt.reduce.lm](#reducelm) 
 
 ## 模擬數據檔與封包匯入 ##
 ```R
