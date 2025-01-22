@@ -87,9 +87,11 @@ s.mt.adjust.glm <- function(datasets, var.y, var.x = c(), confounder = c(), thre
 
     simple.p <- rbind(simple.p, simple.p.cache)
 
+    cat('The variable：', simplevar, 'pvalue = ', min(var.p))
     if (min(var.p) < threshold){
-      cat('The variable：', simplevar, 'were include in Adjust Model')
+      cat(' were include in Adjust Model')
     }
+    cat('\n')
   }
 
   var.x.adj.glm <- simple.p[p < threshold, var][!duplicated(simple.p[p < threshold, var])]
