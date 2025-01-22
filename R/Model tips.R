@@ -97,7 +97,8 @@ s.mt.adjust.glm <- function(datasets, var.y, var.x = c(), confounder = c(), thre
   var.x.adj.glm <- simple.p[p < threshold, var][!duplicated(simple.p[p < threshold, var])]
 
   if (length(var.x.adj.glm) == 0){
-    stop('There is no significance variable in Crude logistic regression model')
+    print('There is no significance variable in Crude logistic regression model')
+    adj.glm <- NULL
   }else{
     fr.adj.glm <- paste(c(confounder, var.x.adj.glm), collapse = ' + ')
     fr.adj.glm <- formula(paste0(var.y, ' ~ ', fr.adj.glm))
@@ -105,8 +106,8 @@ s.mt.adjust.glm <- function(datasets, var.y, var.x = c(), confounder = c(), thre
     adj.glm <- glm(fr.adj.glm, data = datasets, family = 'binomial')
     # summary(adj.glm)
 
-    return(adj.glm)
   }
+  return(adj.glm)
 }
 
 # glm <- s.mt.adjust.glm(datasets = DT, var.y = 'Y1', confounder = paste0('Z', 1:5), threshold = 0.7)
